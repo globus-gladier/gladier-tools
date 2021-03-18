@@ -1,4 +1,4 @@
-from gladier.defaults import GladierDefaults
+from gladier import GladierDefaults
 from .corr import eigen_corr, apply_qmap
 
 class EigenCorr(GladierDefaults):
@@ -77,8 +77,11 @@ class ApplyQmap(GladierDefaults):
     }
 
     required_input = [
-        'message',
-        'funcx_endpoint_non_compute'
+        'proc_dir',
+        'input_file',
+        'qmap_file',
+        'flat_file',
+        'output_file'
     ]
 
     flow_input = {
