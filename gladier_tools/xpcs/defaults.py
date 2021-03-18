@@ -1,7 +1,8 @@
-from gladier import GladierDefaults
+from gladier import GladierBaseTool
 from .corr import eigen_corr, apply_qmap
 
-class EigenCorr(GladierDefaults):
+
+class EigenCorr(GladierBaseTool):
 
     flow_definition = {
         "Eigen Corr": {
@@ -45,7 +46,7 @@ class EigenCorr(GladierDefaults):
         eigen_corr
     ]
 
-class ApplyQmap(GladierDefaults):
+class ApplyQmap(GladierBaseTool):
     
     flow_definition = {
         "Comment": "Apply QMap flow",

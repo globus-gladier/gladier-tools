@@ -1,7 +1,7 @@
-from gladier import GladierDefaults
+from gladier import GladierBaseTool
 from .io import https_download_file, unzip_data
 
-class HttpsDownloadFile(GladierDefaults):
+class HttpsDownloadFile(GladierBaseTool):
 
     flow_definition = {}
 
@@ -23,7 +23,7 @@ class HttpsDownloadFile(GladierDefaults):
         https_download_file
     ]
 
-class UnzipData(GladierDefaults):
+class UnzipData(GladierBaseTool):
     
     flow_definition = {}
 
