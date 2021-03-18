@@ -11,7 +11,8 @@ def eigen_corr(event):
     hdf_file = event['hdf_file'] # name of the file to run EIGEN CORR
 #    qmap_file = event.get('qmap_file', '')
     ##optional
-    flags = event.get('flags', "") # flags for eigen corr
+    flags = event.get('flags', '') # flags for eigen corr
+    corr_loc = event.get('corr_loc', 'corr')
 
     if not os.path.exists(proc_dir):
         raise NameError('proc dir does not exist')
@@ -21,7 +22,7 @@ def eigen_corr(event):
 
     os.chdir(proc_dir)
 
-    cmd = f"corr {hdf_file} -imm {imm_file} {flags}"
+    cmd = f"{corr_loc} {hdf_file} -imm {imm_file} {flags}"
   
     res = subprocess.run(cmd, stdout=PIPE, stderr=PIPE,
                              shell=True, executable='/bin/bash')
