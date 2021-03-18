@@ -21,6 +21,7 @@ setup(
     name='gladier-tools',
     description='A set of reusable Gladier Tools',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     url='https://github.com/globus-gladier/gladier_tools',
     maintainer='The Gladier Team',
     maintainer_email='',
@@ -37,8 +38,8 @@ setup(
         'Operating System :: MacOS :: MacOS X',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7'
-        'Programming Language :: Python :: 3.8'
-        'Programming Language :: Python :: 3.9'
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ]
 )
