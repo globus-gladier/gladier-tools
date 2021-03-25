@@ -1,28 +1,40 @@
-apply_qmap_data = {
-        'proc_dir':'',
-        'input_data':'',
-        'qmap_file':'',
-        'flat_file':'',
-        'output_file':'',
-    }
+
 
 def apply_qmap(data):
     import math
     import os
     import h5py
     import numpy as np
+    for file_arg in ['proc_dir', 'hdf_file', 'qmap_file']:
+        if not data.get(file_arg):
+            raise ValueError(f'You need to provide {file_arg}')
+        if not os.path.exists(data[file_arg]):
+            raise ValueError(f'File or directory {data[file_arg]} does not exist!')
 
     ##minimal data inputs payload
     proc_dir = data.get('proc_dir', '')
     orig_filename = data.get('hdf_file', '')
     qmap_filename = data.get('qmap_file', '')
     flat_filename = data.get('flat_file','')
-    output_filename = data.get('output_file', '') ## NEW H5 FILE based on ORIG + QMAP
+    # output_filename = data.get('output_file', '') ## NEW H5 FILE based on ORIG + QMAP
     ##
     entry = data.get('entry', '/xpcs')
     entry_out='/exchange'
 
     os.chdir(proc_dir)
+    output_filename = orig_filename
+    hdf_name, ext = os.path.splitext(orig_filename)
+    orig_filename = f'{hdf_name}_original{ext}'
+    os.rename(output_filename, orig_filename)
+    # return orig_filename, output_filename
+
+    # # return proc_dir
+    # new_qmap_dir = os.path.join(proc_dir, f'{hdf_name}{suffix}')
+    # return new_qmap_dir
+    # if not os.path.exists(new_qmap_dir):
+    #     os.mkdir(new_qmap_dir)
+    # output_filename = os.path.join(new_qmap_dir, f'{hdf_name}{suffix}{ext}')
+    # return output_filename
 
     # Open the three .h5 files
     # if isfile(orig_filename):

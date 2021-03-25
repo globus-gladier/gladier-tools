@@ -1,11 +1,5 @@
-eigen_corr_data = {
-        'proc_dir':'',
-        'imm_file':'',
-        'hdf_file':'',
-        'flags':'',
-        'flat_file':'',
-        'corr_loc':'corr',
-    }
+from gladier.defaults import GladierDefaults
+
     
 def eigen_corr(event):
     import os
