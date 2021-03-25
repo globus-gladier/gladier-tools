@@ -7,23 +7,17 @@ __all__ = ['EigenCorr', 'ApplyQmap']
 from .corr import *
 from .apply_qmap import * 
 
-class EigenCorr(GladierBaseTool):
-
-    flow_definition = []
-
-    input = eigen_corr_data
-
-    funcx_functions = [
+EigenCorr = GladierBaseTool()
+EigenCorr.flow_definition = []
+EigenCorr.flow_input = eigen_corr_data
+EigenCorr.funcx_functions = [
         eigen_corr
     ]
 
-class ApplyQmap(GladierBaseTool):
-    
-    flow_definition = []
-
-    input = apply_qmap_data
-
-    funcx_functions = [
+ApplyQmap = GladierBaseTool()
+ApplyQmap.flow_definition = []
+ApplyQmap.flow_input = apply_qmap_data
+ApplyQmap.funcx_functions = [
         apply_qmap
     ]
 

@@ -384,3 +384,24 @@ def primalisys(args):
     with open('primalysis_decision.json', 'w') as f:
         json.dump(decision_dict, f)
         
+
+        
+# def funcx_primalisys(data):
+
+#     from dials.primalisys import scrape_log_file, 
+#                                  plot histograms, 
+#                                  decision_engine ## where this will live?
+
+
+#     log_fid = data['prime_input'] ## what this will be called?
+
+#     postref_dict, gb_list = scrape_log_file(log_fid)
+   
+#     png_fid = 'primalysis.png'
+
+#     fitting_list = plot_histograms(postref_dict, gb_list, png_fid)
+    
+#     decision_dict = decision_engine(fitting_list, gb_list)
+
+#     with open('primalysis_decision.json', 'w') as f:
+#         json.dump(decision_dict, f)
