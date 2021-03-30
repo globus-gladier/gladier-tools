@@ -9,17 +9,28 @@ def custom_pilot(event):
     from pilot.client import PilotClient
 
     # Do the last minute renaming before uploading.
+    # The proc dir is a ../A001_Aerogel_1mm_att6_Lq0_001_0001-1000
+    base_proc_dir = os.path.dirname(event['proc_dir'])
     # Split A001_Aerogel_1mm_att6_Lq0_001_0001-1000 and .hdf
     dataset_name, extension = os.path.splitext(os.path.basename(event['hdf_file']))
     # A001_Aerogel_1mm_att6_Lq0_001_0001-1000
-    old_dataset_directory = os.path.join(event['proc_dir'], os.path.dirname(event['hdf_file']))
+    old_dataset_directory = os.path.join(base_proc_dir, os.path.dirname(event['hdf_file']))
     # A001_Aerogel_1mm_att6_Lq0_001_0001-1000_qmap
-    new_dataset_directory = os.path.join(event['proc_dir'], f'{dataset_name}{event["reprocessing_suffix"]}')
+    new_dataset_directory = os.path.join(base_proc_dir, f'{dataset_name}{event["reprocessing_suffix"]}')
     # A001_Aerogel_1mm_att6_Lq0_001_0001-1000_qmap/A001_Aerogel_1mm_att6_Lq0_001_0001-1000.hdf'
     old_hdf_name = os.path.join(new_dataset_directory, os.path.basename(event['hdf_file']))
     # A001_Aerogel_1mm_att6_Lq0_001_0001-1000_qmap/A001_Aerogel_1mm_att6_Lq0_001_0001-1000_qmap.hdf
     new_hdf_name = os.path.join(new_dataset_directory, f'{dataset_name}{event["reprocessing_suffix"]}{extension}')
 
+    # return {
+    #     'proc_dir': event['proc_dir'],
+    #     'hdf_file': event['hdf_file'],
+    #     'dataset_name': dataset_name,
+    #     'old_dataset_directory': old_dataset_directory,
+    #     'new_dataset_directory': new_dataset_directory,
+    #     'old_hdf_name': old_hdf_name,
+    #     'new_hdf_name': new_hdf_name,
+    # }
     os.rename(old_dataset_directory, new_dataset_directory)
     os.rename(old_hdf_name, new_hdf_name)
     hdf_file = new_hdf_name
