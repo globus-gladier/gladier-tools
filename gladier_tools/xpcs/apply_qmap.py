@@ -41,25 +41,31 @@ def apply_qmap(data):
     #     orig_data = h5py.File(orig_filename, "r")
     # else:
     #     raise(NameError('original file does not exist!!'))
+    def h5open(filename, mode):
+        try:
+            return h5py.File(filename, mode)
+        except OSError as ose:
+            raise FileNotFoundError(f'{filename} could not be opened for "{mode}": {str(ose)}')
     
-    orig_data = h5py.File(orig_filename, "r")
+    orig_data = h5open(orig_filename, "r")
 
     ## new parameters
-    qmap_data = h5py.File(qmap_filename, "r")
+    # return qmap_filename
+    qmap_data = h5open(qmap_filename, "r")
     
     ##file to be created
-    output_data = h5py.File(output_filename, "w-")
+    output_data = h5open(output_filename, "w-")
     
     # Copy /measurement from orig_data into outputfile /measurement
     orig_data.copy('/measurement', output_data)
 
-
-    # flatfield file for Lambda (only detector with flatfield right now)
-    if orig_data["/measurement/instrument/detector/manufacturer"].value == "LAMBDA":
-       flat_data = h5py.File(flat_filename,"r")
-       flat_data.copy("/flatField_transpose",output_data,name="/measurement/instrument/detector/flatfield")
-       flat_data.close()
-    
+    # DISABLED! Currently, adding a flat field is optional, and so this may not exist. We need to make the
+    # flow smart enough to know whether to transfer it in or not.
+    # # flatfield file for Lambda (only detector with flatfield right now)
+    # if orig_data["/measurement/instrument/detector/manufacturer"].value == "LAMBDA":
+    #    flat_data = h5py.File(flat_filename,"r")
+    #    flat_data.copy("/flatField_transpose",output_data,name="/measurement/instrument/detector/flatfield")
+    #    flat_data.close()
     output_data[entry+"/Version"] = "1.0"
     output_data[entry+"/analysis_type"] = "Multitau"
     #output_data[entry+"/analysis_type"] = "Twotime"
