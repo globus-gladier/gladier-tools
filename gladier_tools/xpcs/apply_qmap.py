@@ -45,7 +45,7 @@ def apply_qmap(data):
         try:
             return h5py.File(filename, mode)
         except OSError as ose:
-            raise FileNotFoundError(f'{filename} could not be opened for "{mode}": {str(ose)}')
+            raise OSError(f'{filename} could not be opened for "{mode}": {str(ose)}') from None
     
     orig_data = h5open(orig_filename, "r")
 
