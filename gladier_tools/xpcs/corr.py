@@ -9,27 +9,36 @@ eigen_corr_data = {
     
 def eigen_corr(event):
     import os
+    import h5py
     import subprocess
     from subprocess import PIPE
 
     ##minimal data inputs payload
 #    data_dir = event.get('data_dir','') #location of the IMM
     imm_file = event['imm_file'] # raw data
-    ##
     proc_dir = event['proc_dir'] # location of the HDF/QMAP process file / result
     hdf_file = event['hdf_file'] # name of the file to run EIGEN CORR
-#    qmap_file = event.get('qmap_file', '')
+
     ##optional
-    flags = event.get('flags', '') # flags for eigen corr
     corr_loc = event.get('corr_loc', 'corr')
 
     if not os.path.exists(proc_dir):
         raise NameError('proc dir does not exist')
 
-    # if qmap_file:
-    #     apply_qmap(event)
-
     os.chdir(proc_dir)
+
+    flags = ""
+    try:
+        data = h5py.File(hdf_file, 'r')
+        df = data['measurement/instrument/acquisition/datafilename']
+
+        if ".bin" in df.value:
+            flags = "--rigaku"
+        elif ".hdf" in df.value or ".h5" in df.value:
+            flags = "--hdf5"
+    except Exception as e:
+        with open(os.path.join(proc_dir,'corr_error.log'), 'w+') as f:
+                f.write(str(e))
 
     cmd = f"{corr_loc} {hdf_file} -imm {imm_file} {flags}"
   
