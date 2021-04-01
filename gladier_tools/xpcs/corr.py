@@ -31,10 +31,10 @@ def eigen_corr(event):
     try:
         data = h5py.File(hdf_file, 'r')
         df = data['measurement/instrument/acquisition/datafilename']
-
-        if ".bin" in df.value:
+        dfn = str(df[()])
+        if ".bin" in dfn:
             flags = "--rigaku"
-        elif ".hdf" in df.value or ".h5" in df.value:
+        elif ".hdf" in dfn or ".h5" in dfn:
             flags = "--hdf5"
     except Exception as e:
         with open(os.path.join(proc_dir,'corr_error.log'), 'w+') as f:
