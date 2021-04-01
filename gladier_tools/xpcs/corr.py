@@ -28,17 +28,17 @@ def eigen_corr(event):
     os.chdir(proc_dir)
 
     flags = ""
-    try:
-        data = h5py.File(hdf_file, 'r')
-        df = data['measurement/instrument/acquisition/datafilename']
-        dfn = str(df[()])
-        if ".bin" in dfn:
-            flags = "--rigaku"
-        elif ".hdf" in dfn or ".h5" in dfn:
-            flags = "--hdf5"
-    except Exception as e:
-        with open(os.path.join(proc_dir,'corr_error.log'), 'w+') as f:
-                f.write(str(e))
+    with h5py.File(hdf_file, 'r') as data:
+        try:
+            df = data['measurement/instrument/acquisition/datafilename']
+            dfn = str(df[()])
+            if ".bin" in dfn:
+                flags = "--rigaku"
+            elif ".hdf" in dfn or ".h5" in dfn:
+                flags = "--hdf5"
+        except Exception as e:
+            with open(os.path.join(proc_dir,'corr_error.log'), 'w+') as f:
+                    f.write(str(e))
 
     cmd = f"{corr_loc} {hdf_file} -imm {imm_file} {flags}"
   
