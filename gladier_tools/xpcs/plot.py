@@ -1,6 +1,9 @@
 
 
 def make_corr_plots(event):
+    import json
+    with open(event['parameter_file']) as f:
+        event = json.load(f)
     import os
     from XPCS.tools import xpcs_plots
     os.chdir(os.path.join(event['proc_dir'], os.path.dirname(event['hdf_file'])))

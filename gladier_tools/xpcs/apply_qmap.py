@@ -5,6 +5,10 @@ def apply_qmap(data):
     import os
     import h5py
     import numpy as np
+    import json
+    with open(data['parameter_file']) as f:
+        data = json.load(f)
+
     for file_arg in ['proc_dir', 'hdf_file', 'qmap_file']:
         if not data.get(file_arg):
             raise ValueError(f'You need to provide {file_arg}')

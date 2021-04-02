@@ -8,6 +8,10 @@ def custom_pilot(event):
     from XPCS.tools.xpcs_metadata import gather
     from pilot.client import PilotClient
 
+    import json
+    with open(event['parameter_file']) as f:
+        event = json.load(f)
+
     # Do the last minute renaming before uploading.
     # The proc dir is a ../A001_Aerogel_1mm_att6_Lq0_001_0001-1000
     base_proc_dir = os.path.dirname(event['proc_dir'])
