@@ -11,9 +11,9 @@ def apply_qmap(data):
 
     for file_arg in ['proc_dir', 'hdf_file', 'qmap_file']:
         if not data.get(file_arg):
-            raise ValueError(f'You need to provide {file_arg}')
+            return f'You need to provide {file_arg}'
         if not os.path.exists(data[file_arg]):
-            raise ValueError(f'File or directory {data[file_arg]} does not exist!')
+            return f'File or directory {data[file_arg]} does not exist!'
 
     ##minimal data inputs payload
     proc_dir = data.get('proc_dir', '')
@@ -191,5 +191,8 @@ def apply_qmap(data):
     orig_data.close()
     qmap_data.close()
     output_data.close()
+
+    # Remove the original, so we don't end up with a bunch of extra hdf files
+    os.unlink(orig_filename)
 
     return output_filename
