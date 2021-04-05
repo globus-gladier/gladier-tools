@@ -1,11 +1,5 @@
-eigen_corr_data = {
-        'proc_dir':'',
-        'imm_file':'',
-        'hdf_file':'',
-        'flags':'',
-        'flat_file':'',
-        'corr_loc':'corr',
-    }
+from gladier.defaults import GladierDefaults
+
     
 def eigen_corr(event):
     import os
@@ -13,6 +7,9 @@ def eigen_corr(event):
     import subprocess
     from subprocess import PIPE
 
+    import json
+    with open(event['parameter_file']) as f:
+        event = json.load(f)
     ##minimal data inputs payload
 #    data_dir = event.get('data_dir','') #location of the IMM
     imm_file = event['imm_file'] # raw data

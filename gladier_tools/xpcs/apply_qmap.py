@@ -1,53 +1,75 @@
-apply_qmap_data = {
-        'proc_dir':'',
-        'input_data':'',
-        'qmap_file':'',
-        'flat_file':'',
-        'output_file':'',
-    }
+
 
 def apply_qmap(data):
     import math
     import os
     import h5py
     import numpy as np
+    import json
+    with open(data['parameter_file']) as f:
+        data = json.load(f)
+
+    for file_arg in ['proc_dir', 'hdf_file', 'qmap_file']:
+        if not data.get(file_arg):
+            return f'You need to provide {file_arg}'
+        if not os.path.exists(data[file_arg]):
+            return f'File or directory {data[file_arg]} does not exist!'
 
     ##minimal data inputs payload
     proc_dir = data.get('proc_dir', '')
     orig_filename = data.get('hdf_file', '')
     qmap_filename = data.get('qmap_file', '')
     flat_filename = data.get('flat_file','')
-    output_filename = data.get('output_file', '') ## NEW H5 FILE based on ORIG + QMAP
+    # output_filename = data.get('output_file', '') ## NEW H5 FILE based on ORIG + QMAP
     ##
     entry = data.get('entry', '/xpcs')
     entry_out='/exchange'
 
     os.chdir(proc_dir)
+    output_filename = orig_filename
+    hdf_name, ext = os.path.splitext(orig_filename)
+    orig_filename = f'{hdf_name}_original{ext}'
+    os.rename(output_filename, orig_filename)
+    # return orig_filename, output_filename
+
+    # # return proc_dir
+    # new_qmap_dir = os.path.join(proc_dir, f'{hdf_name}{suffix}')
+    # return new_qmap_dir
+    # if not os.path.exists(new_qmap_dir):
+    #     os.mkdir(new_qmap_dir)
+    # output_filename = os.path.join(new_qmap_dir, f'{hdf_name}{suffix}{ext}')
+    # return output_filename
 
     # Open the three .h5 files
     # if isfile(orig_filename):
     #     orig_data = h5py.File(orig_filename, "r")
     # else:
     #     raise(NameError('original file does not exist!!'))
+    def h5open(filename, mode):
+        try:
+            return h5py.File(filename, mode)
+        except OSError as ose:
+            raise OSError(f'{filename} could not be opened for "{mode}": {str(ose)}') from None
     
-    orig_data = h5py.File(orig_filename, "r")
+    orig_data = h5open(orig_filename, "r")
 
     ## new parameters
-    qmap_data = h5py.File(qmap_filename, "r")
+    # return qmap_filename
+    qmap_data = h5open(qmap_filename, "r")
     
     ##file to be created
-    output_data = h5py.File(output_filename, "w-")
+    output_data = h5open(output_filename, "w-")
     
     # Copy /measurement from orig_data into outputfile /measurement
     orig_data.copy('/measurement', output_data)
 
-
-    # flatfield file for Lambda (only detector with flatfield right now)
-    if orig_data["/measurement/instrument/detector/manufacturer"].value == "LAMBDA":
-       flat_data = h5py.File(flat_filename,"r")
-       flat_data.copy("/flatField_transpose",output_data,name="/measurement/instrument/detector/flatfield")
-       flat_data.close()
-    
+    # DISABLED! Currently, adding a flat field is optional, and so this may not exist. We need to make the
+    # flow smart enough to know whether to transfer it in or not.
+    # # flatfield file for Lambda (only detector with flatfield right now)
+    # if orig_data["/measurement/instrument/detector/manufacturer"].value == "LAMBDA":
+    #    flat_data = h5py.File(flat_filename,"r")
+    #    flat_data.copy("/flatField_transpose",output_data,name="/measurement/instrument/detector/flatfield")
+    #    flat_data.close()
     output_data[entry+"/Version"] = "1.0"
     output_data[entry+"/analysis_type"] = "Multitau"
     #output_data[entry+"/analysis_type"] = "Twotime"
@@ -169,5 +191,8 @@ def apply_qmap(data):
     orig_data.close()
     qmap_data.close()
     output_data.close()
+
+    # Remove the original, so we don't end up with a bunch of extra hdf files
+    os.unlink(orig_filename)
 
     return output_filename
