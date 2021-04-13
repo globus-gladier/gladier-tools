@@ -1,4 +1,4 @@
-from gladier.base import GladierBaseTool
+from gladier import GladierBaseTool
 
 from .corr import *
 from .apply_qmap import *
