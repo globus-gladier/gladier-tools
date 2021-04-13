@@ -1,4 +1,4 @@
-from gladier.defaults import GladierDefaults
+from gladier import GladierBaseTool
 
 from .corr import *
 from .apply_qmap import *
@@ -8,7 +8,7 @@ from gladier_tools.xpcs.plot import make_corr_plots
 __all__ = ['EigenCorr', 'ApplyQmap', 'CustomPilot', 'MakeCorrPlots']
 
 
-class EigenCorr(GladierDefaults):
+class EigenCorr(GladierBaseTool):
 
     flow_definition = {
       'Comment': 'Run Corr on an HDF IMM Pair',
@@ -47,7 +47,7 @@ class EigenCorr(GladierDefaults):
     ]
 
 
-class ApplyQmap(GladierDefaults):
+class ApplyQmap(GladierBaseTool):
 
     flow_definition = {
       'Comment': 'Update an HDF with a new qmap settings file',
@@ -83,7 +83,7 @@ class ApplyQmap(GladierDefaults):
     ]
 
 
-class MakeCorrPlots(GladierDefaults):
+class MakeCorrPlots(GladierBaseTool):
 
     flow_definition = {
       'Comment': 'Generate plots for a corr run. REQUIRES globus-automation to be INSTALLED',
@@ -118,7 +118,7 @@ class MakeCorrPlots(GladierDefaults):
     ]
 
 
-class CustomPilot(GladierDefaults):
+class CustomPilot(GladierBaseTool):
 
     flow_definition = {
       'Comment': 'Run Pilot and upload the result to search + petreldata',
