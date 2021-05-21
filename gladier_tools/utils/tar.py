@@ -44,4 +44,7 @@ class Tar(GladierBaseTool):
     }
 
     funcx_functions = [tar]
-    required_input = ['tar_input', 'funcx_endpoint_compute']
+    required_input = [
+        'tar_input', 
+        'funcx_endpoint_non_compute'
+        ]

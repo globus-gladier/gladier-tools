@@ -1,9 +1,4 @@
-https_download_file_data = {
-        'server_url':'',
-        'file_name':'',
-        'file_path':'',
-        'headers':'',
-        }
+
 
 def https_download_file(data):
     """Download a file from HTTPS server"""
@@ -40,3 +35,41 @@ def https_download_file(data):
 
     return full_name
 
+class HttpsDownloadFile(GladierBaseTool):
+
+    flow_definition = {
+        'Comment': 'Downloads one file through https',
+        'StartAt': 'httpDownloadFile',
+        'States': {
+            'httpDownloadFile': {
+                'ActionUrl': 'https://api.funcx.org/automate',
+                'Comment': None,
+                'ExceptionOnActionFailure': True,
+                'Parameters': {
+                    'tasks': [
+                        {
+                            'endpoint.$': '$.input.funcx_endpoint_non_compute',
+                            'func.$': '$.input.https_download_file_funcx_id',
+                            'payload.$': '$.input'
+                        }
+                    ]
+                },
+                'ResultPath': '$.httpDownloadFile',
+                'Type': 'Action',
+                'WaitTime': 300,
+                'End': True,
+            },
+        }
+    }
+
+    funcx_functions = [https_download_file]
+    flow_input = {
+        'headers':'',
+        }
+    required_input = [
+        'server_url',
+        'file_name',
+        'file_path',
+        'headers',
+        'funcx_endpoint_non_compute'
+        ]

@@ -30,7 +30,9 @@ class Transfer(GladierBaseTool):
         }
     }
 
-    flow_input = {'transfer_sync_level': 'checksum'}
+    flow_input = {
+        'transfer_sync_level': 'checksum'
+    }
     required_input = [
         'transfer_source_path',
         'transfer_destination_path',
