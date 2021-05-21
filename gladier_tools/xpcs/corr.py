@@ -7,11 +7,7 @@ def eigen_corr(event):
     import subprocess
     from subprocess import PIPE
 
-    import json
-    with open(event['parameter_file']) as f:
-        event = json.load(f)
     ##minimal data inputs payload
-#    data_dir = event.get('data_dir','') #location of the IMM
     imm_file = event['imm_file'] # raw data
     proc_dir = event['proc_dir'] # location of the HDF/QMAP process file / result
     hdf_file = event['hdf_file'] # name of the file to run EIGEN CORR
