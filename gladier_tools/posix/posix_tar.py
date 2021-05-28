@@ -24,6 +24,7 @@ class Tar(GladierBaseTool):
         'States': {
             'Tar': {
                 'ActionUrl': 'https://api.funcx.org/automate',
+                'ActionScope': 'https://auth.globus.org/scopes/facd7ccc-c5f4-42aa-916b-a0e270e2c2a9/automate2',
                 'Comment': None,
                 'ExceptionOnActionFailure': True,
                 'Parameters': {
@@ -46,5 +47,5 @@ class Tar(GladierBaseTool):
     funcx_functions = [tar]
     required_input = [
         'tar_input', 
-        'funcx_endpoint_non_compute'
+        'funcx_endpoint_compute'
         ]
