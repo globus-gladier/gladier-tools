@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool
 
 
-class GlobusTransfer(GladierBaseTool):
+class Transfer(GladierBaseTool):
 
     flow_definition = {
         'Comment': 'Transfer a file or directory in Globus',
