@@ -14,7 +14,6 @@ class GlobusTransfer(GladierBaseTool):
                 'Parameters': {
                     'source_endpoint_id.$': '$.input.transfer_source_endpoint_id',
                     'destination_endpoint_id.$': '$.input.transfer_destination_endpoint_id',
-                    'sync_level.$': '$.input.transfer_sync_level',
                     'transfer_items': [
                         {
                             'source_path.$': '$.input.transfer_source_path',
