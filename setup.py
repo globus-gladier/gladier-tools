@@ -22,7 +22,7 @@ setup(
     description='A set of reusable Gladier Tools',
     long_description=long_description,
     long_description_content_type='text/x-rst',
-    url='https://github.com/globus-gladier/gladier_tools',
+    url='https://github.com/globus-gladier/gladier-tools',
     maintainer='The Gladier Team',
     maintainer_email='',
     version=version_ns['__version__'],
