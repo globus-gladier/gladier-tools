@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def gather_metadata(data):
+def publish_gather_metadata(data):
     """This function uses the globus-pilot tool to generate metadata compatible with
     portals on petreldata.net. Requires globus_pilot>=0.6.0.
     Requires input:
@@ -60,7 +60,7 @@ class Publish(GladierBaseTool):
                 'Parameters': {
                     'tasks': [{
                         'endpoint.$': '$.input.funcx_endpoint_non_compute',
-                        'func.$': '$.input.gather_metadata_funcx_id',
+                        'func.$': '$.input.publish_gather_metadata_funcx_id',
                         'payload.$': '$.input.pilot',
                     }]
                 },
@@ -100,5 +100,5 @@ class Publish(GladierBaseTool):
     }
 
     funcx_functions = [
-        gather_metadata,
+        publish_gather_metadata,
     ]
