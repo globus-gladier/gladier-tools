@@ -28,7 +28,9 @@ def publish_gather_metadata(data):
     short_path = pc.build_short_path(dataset, destination)
     return {
         'search': {
-            'content': pc.gather_metadata(dataset, destination),
+            'id': data.get('id', 'metadata'),
+            'content': pc.gather_metadata(dataset, destination,
+                                          custom_metadata=data.get('metadata')),
             'subject': pc.get_subject_url(short_path),
             'visible_to': [f'urn:globus:groups:id:{g}' for g in groups + [pc.get_group()]],
             'search_index': index
