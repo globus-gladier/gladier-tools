@@ -16,6 +16,7 @@ def tar(data):
 	with tarfile.open(tar_output, 'w:gz') as tf:
 		for file in os.listdir():
 			tf.add(file)
+			
 	return tar_output
 
 
