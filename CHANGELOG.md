@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/globus-gladier/gladier_tools/compare/v0.2.0...v0.2.1) (2021-07-13)
+
+
+### Bug Fixes
+
+* Tar not archiving paths correctly ([d5d9dec](https://github.com/globus-gladier/gladier_tools/commit/d5d9deca74320c6a9f3ddef2dd319c2c88785bcb))
+
 ## [0.2.0](https://github.com/globus-gladier/gladier_tools/compare/v0.1.0...v0.2.0) (2021-07-06)
 
 
