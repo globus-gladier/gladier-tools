@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool
 
 
-def untar_file(data):
+def untar_file(**data):
     import os
     import tarfile
 

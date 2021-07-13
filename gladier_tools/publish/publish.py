@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def publish_gather_metadata(data):
+def publish_gather_metadata(**data):
     """This function uses the globus-pilot tool to generate metadata compatible with
     portals on petreldata.net. Requires globus_pilot>=0.6.0.
     Requires input:
@@ -56,13 +56,13 @@ class Publish(GladierBaseTool):
             'PublishGatherMetadata': {
                 'Comment': 'Say something to start the conversation',
                 'Type': 'Action',
-                'ActionUrl': 'https://api.funcx.org/automate',
-                'ActionScope': 'https://auth.globus.org/scopes/facd7ccc-c5f4-42aa-916b-a0e270e2c2a9/automate2',
+                'ActionUrl': 'https://automate.funcx.org',
+                'ActionScope': 'https://auth.globus.org/scopes/b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
                 'ExceptionOnActionFailure': False,
                 'Parameters': {
                     'tasks': [{
                         'endpoint.$': '$.input.funcx_endpoint_non_compute',
-                        'func.$': '$.input.publish_gather_metadata_funcx_id',
+                        'function.$': '$.input.publish_gather_metadata_funcx_id',
                         'payload.$': '$.input.pilot',
                     }]
                 },
@@ -74,7 +74,7 @@ class Publish(GladierBaseTool):
                 'Comment': 'Transfer files for publication',
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.automate.globus.org/transfer/transfer',
-                'InputPath': '$.PublishGatherMetadata.details.result.transfer',
+                'InputPath': '$.PublishGatherMetadata.details.result[0].transfer',
                 'ResultPath': '$.PublishTransfer',
                 'WaitTime': 600,
                 'Next': 'PublishIngest',
@@ -84,7 +84,7 @@ class Publish(GladierBaseTool):
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.globus.org/search/ingest',
                 'ExceptionOnActionFailure': False,
-                'InputPath': '$.PublishGatherMetadata.details.result.search',
+                'InputPath': '$.PublishGatherMetadata.details.result[0].search',
                 'ResultPath': '$.PublishIngest',
                 'WaitTime': 300,
                 'End': True
