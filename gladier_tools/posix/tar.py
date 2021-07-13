@@ -10,7 +10,7 @@ def tar(data):
         tar_input = os.path.expanduser(tar_input)
     
     if os.path.isfile(tar_input):
-        raise Excepion("Please input the path to a directory, and not a file")
+        raise Exception("Please input the path to a directory, and not a file")
         
     os.chdir(tar_input)
 
