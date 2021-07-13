@@ -4,20 +4,18 @@ from gladier import GladierBaseTool, generate_flow_definition
 def tar(data):
     import os
     import tarfile
+    import pathlib
     tar_input = data['tar_input']
     
     if '~' in tar_input:
         tar_input = os.path.expanduser(tar_input)
-    
-    if os.path.isfile(tar_input):
-        raise Exception("Please input the path to a directory, and not a file")
         
-    os.chdir(tar_input)
+    path= pathlib.PurePath(tar_input)
+    os.chdir(path.parent)
 
     tar_output = data.get('tar_output', f'{tar_input}.tgz')
     with tarfile.open(tar_output, 'w:gz') as tf:
-        for file in os.listdir():
-            tf.add(file)
+        tf.add(path.name)
             
     return tar_output
 
