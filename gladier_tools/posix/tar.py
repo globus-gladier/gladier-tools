@@ -9,7 +9,7 @@ def tar(data):
     if '~' in tar_input:
         tar_input = os.path.expanduser(tar_input)
     
-    if os.isfile(tar_input):
+    if os.path.isfile(tar_input):
         raise Excepion("Please input the path to a directory, and not a file")
         
     os.chdir(tar_input)
