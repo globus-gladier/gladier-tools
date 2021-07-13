@@ -10,7 +10,6 @@ def tar(data):
         tar_input = os.path.expanduser(tar_input)
     
     os.chdir(tar_input)
-    print(os.getcwd())
 
     tar_output = data.get('tar_output', f'{tar_input}.tgz')
     with tarfile.open(tar_output, 'w:gz') as tf:
