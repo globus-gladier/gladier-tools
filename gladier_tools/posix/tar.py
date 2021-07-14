@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def tar(data):
+def tar(**data):
     import os
     import tarfile
     import pathlib
@@ -10,7 +10,7 @@ def tar(data):
     if '~' in tar_input:
         tar_input = os.path.expanduser(tar_input)
         
-    path= pathlib.PurePath(tar_input)
+    path = pathlib.PurePath(tar_input)
     os.chdir(path.parent)
 
     tar_output = data.get('tar_output', f'{tar_input}.tgz')
@@ -29,15 +29,15 @@ class Tar(GladierBaseTool):
         'StartAt': 'Tar',
         'States': {
             'Tar': {
-                'ActionUrl': 'https://api.funcx.org/automate',
-                'ActionScope': 'https://auth.globus.org/scopes/facd7ccc-c5f4-42aa-916b-a0e270e2c2a9/automate2',
+                'ActionUrl': 'https://automate.funcx.org',
+                'ActionScope': 'https://auth.globus.org/scopes/b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
                 'Comment': None,
                 'ExceptionOnActionFailure': True,
                 'Parameters': {
                     'tasks': [
                         {
                             'endpoint.$': '$.input.funcx_endpoint_compute',
-                            'func.$': '$.input.tar_funcx_id',
+                            'function.$': '$.input.tar_funcx_id',
                             'payload.$': '$.input'
                         }
                     ]

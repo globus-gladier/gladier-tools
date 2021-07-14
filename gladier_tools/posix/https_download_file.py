@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool
 
 
-def https_download_file(data):
+def https_download_file(**data):
     """Download a file from HTTPS server"""
     import os
     import requests
@@ -36,6 +36,7 @@ def https_download_file(data):
 
     return full_name
 
+
 class HttpsDownloadFile(GladierBaseTool):
 
     flow_definition = {
@@ -50,7 +51,7 @@ class HttpsDownloadFile(GladierBaseTool):
                     'tasks': [
                         {
                             'endpoint.$': '$.input.funcx_endpoint_non_compute',
-                            'func.$': '$.input.https_download_file_funcx_id',
+                            'function.$': '$.input.https_download_file_funcx_id',
                             'payload.$': '$.input'
                         }
                     ]
