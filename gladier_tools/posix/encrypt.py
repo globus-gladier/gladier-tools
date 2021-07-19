@@ -44,34 +44,6 @@ def encrypt(**data):
 
 @generate_flow_definition
 class Encrypt(GladierBaseTool):
-
-    # Custom flow definition to set 'ExceptionOnActionFailure' to True. 
-    flow_definition = {
-        'Comment': 'Flow with states: Encrypts a given file using AES 128 bit symmetric key encryption.',
-        'StartAt': 'Encrypt',
-        'States': {
-            'Encrypt': {
-                'ActionUrl': 'https://automate.funcx.org',
-                'ActionScope': 'https://auth.globus.org/scopes/b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
-                'Comment': None,
-                'ExceptionOnActionFailure': True,
-                'Parameters': {
-                    'tasks': [
-                        {
-                            'endpoint.$': '$.input.funcx_endpoint_compute',
-                            'function.$': '$.input.encrypt_funcx_id',
-                            'payload.$': '$.input'
-                        }
-                    ]
-                },
-                'ResultPath': '$.Encrypt',
-                'Type': 'Action',
-                'WaitTime': 300,
-                'End': True,
-            },
-        }
-    }
-
     funcx_functions = [encrypt]
     required_input = [
         'encrypt_input',
