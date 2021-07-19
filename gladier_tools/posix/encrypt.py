@@ -9,16 +9,18 @@ def encrypt(**data):
     from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
     import base64
 
-    password = bytes(data['key'], 'utf-8')
+    password = bytes(data['encrypt_key'], 'utf-8')
     salt= b'\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00'
     # salt = os.urandom(16)
+
+    #PBKDF2HMAC is a key derivation function, which is used to derive a 
+    #URL-safe base64-encoded 32-byte key from the initial user input password
+    #Cryptography library documentation: https://cryptography.io/en/latest/fernet/#using-passwords-with-fernet
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=100000)
     key = base64.urlsafe_b64encode(kdf.derive(password))
     fernet = Fernet(key)
     
     infile= data['encrypt_input']
-    
-
     if '~' in infile:
         infile = os.path.expanduser(infile)
     
@@ -47,6 +49,6 @@ class Encrypt(GladierBaseTool):
     funcx_functions = [encrypt]
     required_input = [
         'encrypt_input',
-        'key', 
+        'encrypt_key', 
         'funcx_endpoint_compute'
         ]
