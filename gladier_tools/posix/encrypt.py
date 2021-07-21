@@ -10,7 +10,7 @@ def encrypt(**data):
     from cryptography.hazmat.primitives.kdf.concatkdf import ConcatKDFHash
     import base64
 
-    password = bytes(data['key'], 'utf-8')
+    password = bytes(data['encrypt_key'], 'utf-8')
     ckdf = ConcatKDFHash(algorithm=hashes.SHA256(),length=32,otherinfo=None,)
     key = base64.urlsafe_b64encode(ckdf.derive(password))
     fernet = Fernet(key)
