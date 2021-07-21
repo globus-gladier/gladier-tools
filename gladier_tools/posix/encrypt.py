@@ -3,6 +3,10 @@ from pprint import pprint
 
 
 def encrypt(**data):
+
+    """ Encrypt tool takes in a file and a password to perform 128-bit AES encryption on the file. 
+    It has not been found to be compatible with 3rd party encryption/decryption tools. """
+
     import os
     from cryptography.fernet import Fernet
     from cryptography.hazmat.primitives import hashes

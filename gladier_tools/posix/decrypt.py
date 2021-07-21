@@ -3,6 +3,11 @@ from pprint import pprint
 
 
 def decrypt (**data):
+
+    """ Decrypt tool takes in an encrypted file and a password to perform decryption on the file.
+    The decryption only works on files that have been encrypted by the Gladier Encrypt tool. 
+    It has not been found to be compatible with 3rd party encryption/decryption tools. """
+
     import os
     from cryptography.fernet import Fernet
     from cryptography.hazmat.primitives import hashes
