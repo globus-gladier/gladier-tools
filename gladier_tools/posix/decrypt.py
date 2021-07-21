@@ -42,4 +42,3 @@ class Decrypt(GladierBaseTool):
         'decrypt_key',
         'funcx_endpoint_compute'
     ]
-    flow_input = {'decrypt_salt': b'\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00'}
