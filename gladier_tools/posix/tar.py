@@ -21,6 +21,15 @@ def tar(**data):
 
 
 class Tar(GladierBaseTool):
+    """
+    The Tar tool makes it possible to create Tar archives from folders.
+
+    :param tar_input: Input directory to archive.
+    :param tar_output: (optional) output file to save the new archive. Defaults to the original
+                       input file with an extension (myfile.tgz) if not given.
+    :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.
+    :returns path: The name of the newly created archive.
+    """
 
     # Custom flow definition to set 'ExceptionOnActionFailure' to True. We don't
     # want a transfer to start if tarring fails
