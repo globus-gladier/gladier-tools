@@ -3,30 +3,27 @@ import tarfile, os
 import pytest
 from gladier_tools.posix.untar import untar_file
 
+@pytest.fixture
+def mock_isfile(monkeypatch):
+    """Mock isfile. Returns False by default"""
+    monkeypatch.setattr(os.path, 'isfile', Mock(return_value=False))
+    return os.path.isfile
 
-def isfile_sub(data):
-        return False
-
-def test_no_file(monkeypatch):
-    monkeypatch.setattr(os.path, 'isfile', isfile_sub)
+def test_no_file(monkeypatch, mock_isfile):
     with pytest.raises(NameError):
         untar_file()
 
-def test_mkdir(monkeypatch):
-    monkeypatch.setattr(os.path, 'isfile', Mock(return_value=True))
+@pytest.mark.usefixtures("mock_tar")
+def test_mkdir(monkeypatch, mock_isfile, mock_tar):
+    mock_isfile.return_value= True
     monkeypatch.setattr(os.path, 'exists', Mock(return_value=False))
-
     mock_mkdir= Mock()
     monkeypatch.setattr(os, 'makedirs', mock_mkdir)
-    mock_tf= Mock()
-    mock_extract= Mock()
-    mock_tf.return_value.__enter__ = Mock(return_value=mock_extract)
-    mock_tf.return_value.__exit__ = Mock(return_value=None)
-    monkeypatch.setattr(tarfile, 'open', mock_tf)
+    mock_tf, mock_context_manager= mock_tar
     untar_file()
     assert mock_mkdir.called
     assert mock_tf.called
-    assert mock_extract.extractall.called
+    assert mock_context_manager.extractall.called
     
 
 
