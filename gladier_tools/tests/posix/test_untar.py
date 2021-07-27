@@ -13,7 +13,6 @@ def test_no_file(monkeypatch, mock_isfile):
     with pytest.raises(NameError):
         untar_file()
 
-@pytest.mark.usefixtures("mock_tar")
 def test_mkdir(monkeypatch, mock_isfile, mock_tar):
     mock_isfile.return_value= True
     monkeypatch.setattr(os.path, 'exists', Mock(return_value=False))
