@@ -3,6 +3,17 @@ from gladier import GladierBaseTool
 
 class Transfer(GladierBaseTool):
 
+    """
+    The Transfer tool makes it possible to transfer data (files/folders) between globus endpoints.
+
+    :param transfer_source_path: Path to the data that needs to be transferred in the source endpoint.
+    :param transfer_destination_path: Path where the data will be transferred to in the destination endpoint.
+    :param transfer_source_endpoint_id: Globus ID of the endpoint from which data will be transferred.
+    :param transfer_destination_endpoint_id: Globus ID of the endpoint to which data will be transferred.
+    :param transfer_recursive: Set to True if all the contents within a directory need to be transferred recursively, False otherwise.
+    :returns success: Whether or not the transfer was successful.
+    """
+
     flow_definition = {
         'Comment': 'Transfer a file or directory in Globus',
         'StartAt': 'Transfer',

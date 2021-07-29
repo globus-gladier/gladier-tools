@@ -4,8 +4,17 @@ from pprint import pprint
 
 def encrypt(**data):
 
-    """ Encrypt tool takes in a file and a password to perform 128-bit AES encryption on the file. 
-    It has not been found to be compatible with 3rd party encryption/decryption tools. """
+    """
+    The Encrypt tool takes in a file and a password to perform 128-bit AES symmetric key encryption on the file.
+    The original contents of the file are overwritten with the encrypted text.
+    Adds an extension (.aes) to the name of the file.
+    It has not been found to be compatible with 3rd party encryption/decryption tools. 
+
+    :param encrypt_input: Path to the file which needs to be encrypted.
+    :param encrypt_key: Symmetric key or "password" which can be used to decrypt the encrypted file.
+    :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.
+    :returns output_path: Location of the encrypted file.
+    """
 
     import os
     from cryptography.fernet import Fernet
