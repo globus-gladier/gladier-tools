@@ -24,6 +24,15 @@ def untar_file(**data):
     return output_path
 
 class UnTar(GladierBaseTool):
+    """
+    The UnTar tool makes it possible to extract data from Tar archives.
+
+    :param file_path: Directory in which the tar file exists. Defaults to empty string if not passed.
+    :param file_name: Name of the .tgz file which has to be untarred. Defaults to empty string if not passed.
+    :param output_path: Location where the files will be extracted from the archive. Defaults to empty string if not passed.
+    :param funcx_endpoint_non_compute: By default, uses the ``non-compute`` funcx endpoint.
+    :returns output_path: Location of the extracted files.
+    """
 
     flow_definition = {
         'Comment': 'UnTar a single file',
