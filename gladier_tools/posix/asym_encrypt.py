@@ -8,7 +8,7 @@ def asym_encrypt(**data):
     from cryptography.hazmat.primitives.asymmetric import padding
     from cryptography.hazmat.primitives import hashes
 
-    public_file = data.get('public_key_path', '~/.ssh/id_rsa.pub')
+    public_file = data['public_key_path']
     if '~' in public_file:
         public_file = os.path.expanduser(public_file)
 
@@ -60,3 +60,6 @@ class AsymmetricEncrypt(GladierBaseTool):
         'asym_encrypt_file',
         'funcx_endpoint_compute'
     ]
+    flow_input = {
+        'public_key_path': '~/.ssh/id_rsa.pub'
+    }

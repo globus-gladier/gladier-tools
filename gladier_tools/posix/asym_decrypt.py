@@ -8,7 +8,7 @@ def asym_decrypt(**data):
     from cryptography.hazmat.primitives.asymmetric import padding
     from cryptography.hazmat.primitives import hashes
 
-    private_file = data.get('private_key_path', '~/.ssh/id_rsa')
+    private_file = data['private_key_path']
     if '~' in private_file:
         private_file = os.path.expanduser(private_file)
 
@@ -55,7 +55,7 @@ class AsymmetricDecrypt(GladierBaseTool):
     tools.
 
     :param private_key_path: Path to the id_rsa file which contains
-    the RSA private key. Defaults to ~/.ssh/id_rsa
+    the RSA private key. Defaults to ~/.ssh/id_rsa if not passed in.
     :param asym_decrypt_file: File which needs to be decrypted.
     :param funcx_endpoint_compute: By default, uses the ``compute``
     funcx endpoint.
@@ -72,3 +72,7 @@ class AsymmetricDecrypt(GladierBaseTool):
         'asym_decrypt_file',
         'funcx_endpoint_compute'
     ]
+
+    flow_input = {
+        'private_key_path': '~/.ssh/id_rsa'
+    }
