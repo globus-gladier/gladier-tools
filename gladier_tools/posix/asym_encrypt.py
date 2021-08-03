@@ -31,10 +31,10 @@ def asym_encrypt(**data):
         )
     )
 
-    with open(infile+'.rsa', 'wb') as outfile:
+    with open(f'{infile}.rsa', 'wb') as outfile:
         outfile.write(ciphertext)
 
-    return infile+'.rsa'
+    return f'{infile}.rsa'
 
 
 @generate_flow_definition
