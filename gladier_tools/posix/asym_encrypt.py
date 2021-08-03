@@ -8,7 +8,7 @@ def asym_encrypt(**data):
     from cryptography.hazmat.primitives.asymmetric import padding
     from cryptography.hazmat.primitives import hashes
 
-    public_file = data['public_key_path']
+    public_file = data.get('public_key_path', '~/.ssh/id_rsa.pub')
     if '~' in public_file:
         public_file = os.path.expanduser(public_file)
 
@@ -47,7 +47,7 @@ class AsymmetricEncrypt(GladierBaseTool):
     tools.
 
     :param public_key_path: Path to the .pub file which contains
-    the RSA public key.
+    the RSA public key. Defaults to ~/.ssh/id_rsa.pub
     :param asym_encrypt_file: File which needs to be encrypted.
     :param funcx_endpoint_compute: By default, uses the ``compute``
     funcx endpoint.
