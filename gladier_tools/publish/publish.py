@@ -2,18 +2,6 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 
 def publish_gather_metadata(**data):
-    """This function uses the globus-pilot tool to generate metadata compatible with
-    portals on petreldata.net. Requires globus_pilot>=0.6.0.
-    Requires input:
-    * ``dataset`` -- Path to file or directory
-    * ``destination`` -- relative location under project directory to place dataset (Default `/`)
-    * ``source_globus_endpoint`` -- The endpoint of the machine where you are executing
-    * ``index`` -- The index to ingest this dataset
-    * ``project`` -- The pilot project to use for this dataset
-    * ``groups`` -- A list of additional groups to make these records visible_to
-
-    Requires: the 'globus-pilot' package to be installed.
-    """
     from pilot.client import PilotClient
 
     dataset, destination = data['dataset'], data.get('destination', '/')
@@ -48,6 +36,37 @@ def publish_gather_metadata(**data):
 
 
 class Publish(GladierBaseTool):
+    """This function uses the globus-pilot tool to generate metadata compatible with
+    portals on petreldata.net. Requires globus_pilot>=0.6.0.
+
+    Publication happens in three steps:
+
+    * PublishGatherMetadata -- A funcx function which uses globus-pilot to gather metadata on files or folders
+    * PublishTransfer -- Transfers data to the Globus Endpoint selected in Globus Pilot
+    * PublishIngest -- Ingest metadata gathered in fist step to Globus Search
+
+
+    NOTE: This tool nests input under the 'pilot' keyword. Submit your input as the following:
+
+    .. code-block::
+
+        {
+            'input': {
+                'pilot': {
+                    'dataset': 'foo',
+                    'index': 'my-uuid'
+                }
+        }
+
+    :param dataset: Path to file or directory
+    :param destination: relative location under project directory to place dataset (Default `/`)
+    :param source_globus_endpoint: The Globus Endpoint of the machine where you are executing
+    :param index: The index to ingest this dataset in Globus Search
+    :param project: The Pilot project to use for this dataset
+    :param groups: A list of additional groups to make these records visible_to.
+
+    Requires: the 'globus-pilot' package to be installed.
+    """
 
     flow_definition = {
         'Comment': 'Publish metadata to Globus Search, with data from the result.',
