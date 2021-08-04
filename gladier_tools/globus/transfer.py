@@ -2,6 +2,16 @@ from gladier import GladierBaseTool
 
 
 class Transfer(GladierBaseTool):
+    """
+    Transfer is a simple single-state flow with no FuncX Functions, which talks directly
+    to the Transfer Action Provider. It transfers only a single file or directory.
+
+    :param transfer_source_endpoint_id: Globus Source Endpoint UUID
+    :param transfer_destination_endpoint_id: Globus Destination Endpoint UUID
+    :param transfer_source_path: Globus Source Path
+    :param transfer_destination_path: Globus Destination Path
+    :param transfer_recursive: True if this is a directory, false otherwise.
+    """
 
     """
     The Transfer tool makes it possible to transfer data (files/folders) between globus endpoints.
