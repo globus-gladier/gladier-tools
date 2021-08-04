@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def asym_encrypt(**data):
+def asymmetric_encrypt(**data):
     import os
     from cryptography.hazmat.primitives.serialization import \
         load_ssh_public_key
@@ -47,14 +47,14 @@ class AsymmetricEncrypt(GladierBaseTool):
     tools.
 
     :param public_key_path: Path to the .pub file which contains
-    the RSA public key. Defaults to ~/.ssh/id_rsa.pub
+        the RSA public key. Defaults to ~/.ssh/id_rsa.pub
     :param asym_encrypt_file: File which needs to be encrypted.
     :param funcx_endpoint_compute: By default, uses the ``compute``
-    funcx endpoint.
+        funcx endpoint.
     :returns output_path: Location of the encrypted file.
     """
 
-    funcx_functions = [asym_encrypt]
+    funcx_functions = [asymmetric_encrypt]
     required_input = [
         'public_key_path',
         'asym_encrypt_file',
