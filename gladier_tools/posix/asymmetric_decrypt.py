@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def asym_decrypt(**data):
+def asymmetric_decrypt(**data):
     import os
     from cryptography.hazmat.primitives.serialization import \
         load_ssh_private_key
@@ -55,18 +55,18 @@ class AsymmetricDecrypt(GladierBaseTool):
     tools.
 
     :param private_key_path: Path to the id_rsa file which contains
-    the RSA private key. Defaults to ~/.ssh/id_rsa if not passed in.
+        the RSA private key. Defaults to ~/.ssh/id_rsa if not passed in.
     :param asym_decrypt_file: File which needs to be decrypted.
     :param funcx_endpoint_compute: By default, uses the ``compute``
-    funcx endpoint.
+        funcx endpoint.
     :param asym_decrypt_password: (Optional) If the private file is password
-    protected, pass it in through this argument.
+        protected, pass it in through this argument.
     :param output_file: (Optional) Path to the output file which holds the
-    decrypted contents.
+        decrypted contents.
     :returns output_path: Location of the decrypted file.
     """
 
-    funcx_functions = [asym_decrypt]
+    funcx_functions = [asymmetric_decrypt]
     required_input = [
         'private_key_path',
         'asym_decrypt_file',
