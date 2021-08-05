@@ -44,13 +44,13 @@ class Decrypt(GladierBaseTool):
 
     :param decrypt_input: Path to the file which needs to be decrypted.
     :param decrypt_key: Symmetric key or "password" which will be used
-    to decrypt the encrypted file. Must be the same key that was used
-    during encryption.
+        to decrypt the encrypted file. Must be the same key that was
+        used during encryption.
     :param decrypt_output: (optional) The full path to the decrypted file.
-    If not provided, the decrypted file will have the same name as the input
-    file, with the last 4 characters truncated(assuming it was a .aes file).
+        If not provided, the decrypted file will have the same name as the input
+        file, with the last 4 characters truncated(assuming it was a .aes file).
     :param funcx_endpoint_compute: By default, uses the ``compute`` funcx
-    endpoint.
+        endpoint.
     :returns output_path: Location of the decrypted file.
     """
 

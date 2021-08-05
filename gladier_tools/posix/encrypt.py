@@ -53,9 +53,9 @@ class Encrypt(GladierBaseTool):
 
     :param encrypt_input: Path to the file which needs to be encrypted.
     :param encrypt_key: Symmetric key or "password" which can be used to
-    decrypt the encrypted file.
+        decrypt the encrypted file.
     :param funcx_endpoint_compute: By default, uses the ``compute``
-    funcx endpoint.
+        funcx endpoint.
     :returns output_path: Location of the encrypted file.
     """
 
