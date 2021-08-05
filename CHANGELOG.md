@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/globus-gladier/gladier_tools/compare/v0.3.0...v0.3.1) (2021-08-05)
+
+
+### Features
+
+* Add encrypt/decrypt tools [#20](https://github.com/globus-gladier/gladier_tools/issues/20) ([7a62684](https://github.com/globus-gladier/gladier_tools/commit/7a62684519c939faaeafb2f2def76b53ddd5d578))
+* Added asymmetrical encrypt/decrypt tools [#32](https://github.com/globus-gladier/gladier_tools/issues/32) ([97f308e](https://github.com/globus-gladier/gladier_tools/commit/97f308e259fe426c30deb76d024761c1e34c0ff6))
+
+
+### Bug Fixes
+
+* Bug when tar_input on Tar Tool had a trailing slash ([#36](https://github.com/globus-gladier/gladier_tools/issues/36)) ([98ac3f2](https://github.com/globus-gladier/gladier_tools/commit/98ac3f2e3fce9fa48d31beffc6de4da44306f802))
+* Fixed tar incorrect file hierarchy ([3b62d86](https://github.com/globus-gladier/gladier_tools/commit/3b62d86b358c438063ced96b92331a437a552b27))
+
 ## [0.3.0](https://github.com/globus-gladier/gladier_tools/compare/v0.2.1...v0.3.0) (2021-07-19)
 
 
