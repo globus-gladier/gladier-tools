@@ -2,37 +2,43 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 
 def publish_gather_metadata(**data):
+    import traceback
     from pilot.client import PilotClient
+    from pilot.exc import PilotClientException, FileOrFolderDoesNotExist
+    try:
+        dataset, destination = data['dataset'], data.get('destination', '/')
+        index, project, groups = data['index'], data['project'], data.get('groups', [])
 
-    dataset, destination = data['dataset'], data.get('destination', '/')
-    index, project, groups = data['index'], data['project'], data.get('groups', [])
-
-    # Bootstrap Pilot
-    pc = PilotClient(config_file=None, index_uuid=index)
-    pc.project.set_project(project)
-    # short_path is how pilot internally refers to datasets, implicitly accounting for
-    # the endpoint and base project path. After publication, you may refer to your
-    # dataset via the short path -- ``pilot describe short_path``
-    short_path = pc.build_short_path(dataset, destination)
-    return {
-        'search': {
-            'id': data.get('id', 'metadata'),
-            'content': pc.gather_metadata(dataset, destination,
-                                          custom_metadata=data.get('metadata')),
-            'subject': pc.get_subject_url(short_path),
-            'visible_to': [f'urn:globus:groups:id:{g}' for g in groups + [pc.get_group()]],
-            'search_index': index
-        },
-        'transfer': {
-            'source_endpoint_id': data['source_globus_endpoint'],
-            'destination_endpoint_id': pc.get_endpoint(),
-            'transfer_items': [{
-                'source_path': src,
-                'destination_path': dest,
-                # 'recursive': False,  # each file is explicit in pilot, no directories
-            } for src, dest in pc.get_globus_transfer_paths(dataset, destination)]
+        # Bootstrap Pilot
+        pc = PilotClient(config_file=None, index_uuid=index)
+        pc.project.set_project(project)
+        # short_path is how pilot internally refers to datasets, implicitly accounting for
+        # the endpoint and base project path. After publication, you may refer to your
+        # dataset via the short path -- ``pilot describe short_path``
+        short_path = pc.build_short_path(dataset, destination)
+        return {
+            'search': {
+                'id': data.get('id', 'metadata'),
+                'content': pc.gather_metadata(dataset, destination,
+                                              custom_metadata=data.get('metadata')),
+                'subject': pc.get_subject_url(short_path),
+                'visible_to': [f'urn:globus:groups:id:{g}' for g in groups + [pc.get_group()]],
+                'search_index': index
+            },
+            'transfer': {
+                'source_endpoint_id': data['source_globus_endpoint'],
+                'destination_endpoint_id': pc.get_endpoint(),
+                'transfer_items': [{
+                    'source_path': src,
+                    'destination_path': dest,
+                    # 'recursive': False,  # each file is explicit in pilot, no directories
+                } for src, dest in pc.get_globus_transfer_paths(dataset, destination)]
+            }
         }
-    }
+    except (PilotClientException, FileOrFolderDoesNotExist):
+        # FuncX does not allow for custom exceptions. Catch and print any pilot errors
+        # so that FuncX does not encounter them.
+        return traceback.format_exc()
 
 
 class Publish(GladierBaseTool):
@@ -41,7 +47,8 @@ class Publish(GladierBaseTool):
 
     Publication happens in three steps:
 
-    * PublishGatherMetadata -- A funcx function which uses globus-pilot to gather metadata on files or folders
+    * PublishGatherMetadata -- A funcx function which uses globus-pilot to gather
+      metadata on files or folders
     * PublishTransfer -- Transfers data to the Globus Endpoint selected in Globus Pilot
     * PublishIngest -- Ingest metadata gathered in fist step to Globus Search
 
@@ -76,7 +83,8 @@ class Publish(GladierBaseTool):
                 'Comment': 'Say something to start the conversation',
                 'Type': 'Action',
                 'ActionUrl': 'https://automate.funcx.org',
-                'ActionScope': 'https://auth.globus.org/scopes/b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
+                'ActionScope': 'https://auth.globus.org/scopes/'
+                               'b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
                 'ExceptionOnActionFailure': False,
                 'Parameters': {
                     'tasks': [{
