@@ -1,0 +1,4 @@
+globus-pilot>=0.6.2
+pytest
+pytest-cov
+flake8
