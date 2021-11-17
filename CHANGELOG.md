@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/globus-gladier/gladier_tools/compare/v0.3.2...v0.3.3) (2021-11-17)
+
+
+### Bug Fixes
+
+* Encrypt Tools imports not being top level ([38d1c88](https://github.com/globus-gladier/gladier_tools/commit/38d1c88884a1bb11a28a1409cc18df9c77b4405e))
+
+### [0.3.2](https://github.com/globus-gladier/gladier_tools/compare/v0.3.1...v0.3.2) (2021-11-15)
+
+
+### Bug Fixes
+
+* Fix publish raising custom exceptions, add unit tests ([#37](https://github.com/globus-gladier/gladier_tools/issues/37)) ([90fc22a](https://github.com/globus-gladier/gladier_tools/commit/90fc22ad66dc72ead1196e910b6bb054227c397f))
+
 ### [0.3.1](https://github.com/globus-gladier/gladier_tools/compare/v0.3.0...v0.3.1) (2021-08-05)
 
 

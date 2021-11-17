@@ -6,7 +6,7 @@ def untar_file(**data):
     import tarfile
 
     ##minimal data inputs payload
-    file_path = data.get('file_path', '')
+    file_path = os.path.expanduser(data.get('file_path', ''))
     file_name = data.get('file_name', '')
     output_path = data.get('output_path', '')
     ##
@@ -23,7 +23,10 @@ def untar_file(**data):
         file.extractall(output_path)
     return output_path
 
-@generate_flow_definition
+@generate_flow_definition(modifiers={
+    'untar_file': {'ExceptionOnActionFailure': True,
+                   'WaitTime': 300}
+})
 class UnTar(GladierBaseTool):
     """
     The UnTar tool makes it possible to extract data from Tar archives.
