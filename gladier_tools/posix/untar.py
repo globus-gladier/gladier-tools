@@ -28,9 +28,9 @@ class UnTar(GladierBaseTool):
     The UnTar tool makes it possible to extract data from Tar archives.
 
     :param untar_input: Input directory to archive.
-    :param untar_output: (optional) output file to save the new archive. Defaults to the original
+    :param untar_output: (optional) output file to save the new archive. Defaults to the original  # noqa
                        input file with an extension '.tgz' removed.
-    :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.
+    :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.  # noqa
     :returns path: The name of the newly created archive.
     """
 
