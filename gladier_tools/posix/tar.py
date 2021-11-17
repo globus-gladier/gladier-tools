@@ -17,8 +17,9 @@ def tar(**data):
 
     return tar_output
 
-@generate_flow_definition ## Need to add 'ExceptionOnActionFailure': True on the modifiers
-
+@generate_flow_definition(modifiers={
+    'untar_file': {'ExceptionOnActionFailure': True,
+                   'WaitTime': 300}
 class Tar(GladierBaseTool):
     """
     The Tar tool makes it possible to create Tar archives from folders.
