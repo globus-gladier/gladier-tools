@@ -1,4 +1,4 @@
-from gladier import GladierBaseTool
+from gladier import GladierBaseTool, generate_flow_definition
 
 
 def https_download_file(**data):
@@ -36,33 +36,8 @@ def https_download_file(**data):
 
     return full_name
 
-
+@generate_flow_definition
 class HttpsDownloadFile(GladierBaseTool):
-
-    flow_definition = {
-        'Comment': 'Downloads one file through https',
-        'StartAt': 'httpDownloadFile',
-        'States': {
-            'httpDownloadFile': {
-                'ActionUrl': 'https://api.funcx.org/automate',
-                'Comment': None,
-                'ExceptionOnActionFailure': True,
-                'Parameters': {
-                    'tasks': [
-                        {
-                            'endpoint.$': '$.input.funcx_endpoint_non_compute',
-                            'function.$': '$.input.https_download_file_funcx_id',
-                            'payload.$': '$.input'
-                        }
-                    ]
-                },
-                'ResultPath': '$.httpDownloadFile',
-                'Type': 'Action',
-                'WaitTime': 300,
-                'End': True,
-            },
-        }
-    }
 
     funcx_functions = [https_download_file]
     flow_input = {

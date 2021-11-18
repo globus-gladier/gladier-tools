@@ -1,4 +1,4 @@
-from gladier import GladierBaseTool
+from gladier import GladierBaseTool, generate_flow_definition
 
 
 def tar(**data):
@@ -17,6 +17,10 @@ def tar(**data):
 
     return tar_output
 
+@generate_flow_definition(modifiers={
+    'tar': {'ExceptionOnActionFailure': True,
+                   'WaitTime': 300}
+})
 
 class Tar(GladierBaseTool):
     """
@@ -28,35 +32,6 @@ class Tar(GladierBaseTool):
     :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.
     :returns path: The name of the newly created archive.
     """
-
-    # Custom flow definition to set 'ExceptionOnActionFailure' to True. We don't
-    # want a transfer to start if tarring fails
-    flow_definition = {
-        'Comment': 'Flow with states: Tar a given folder',
-        'StartAt': 'Tar',
-        'States': {
-            'Tar': {
-                'ActionUrl': 'https://automate.funcx.org',
-                'ActionScope': 'https://auth.globus.org/scopes/'
-                               'b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
-                'Comment': None,
-                'ExceptionOnActionFailure': True,
-                'Parameters': {
-                    'tasks': [
-                        {
-                            'endpoint.$': '$.input.funcx_endpoint_compute',
-                            'function.$': '$.input.tar_funcx_id',
-                            'payload.$': '$.input'
-                        }
-                    ]
-                },
-                'ResultPath': '$.Tar',
-                'Type': 'Action',
-                'WaitTime': 300,
-                'End': True,
-            },
-        }
-    }
 
     funcx_functions = [tar]
     required_input = [

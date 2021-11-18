@@ -18,7 +18,6 @@ def untar(**data):
             file.extractall()
     return str(untar_output)
 
-
 @generate_flow_definition(modifiers={
     'untar': {'ExceptionOnActionFailure': True,
               'WaitTime': 300}
@@ -33,9 +32,8 @@ class UnTar(GladierBaseTool):
     :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.  # noqa
     :returns path: The name of the newly created archive.
     """
-
+    
     funcx_functions = [untar]
-
     required_input = [
             'untar_input',
             'funcx_endpoint_compute',
