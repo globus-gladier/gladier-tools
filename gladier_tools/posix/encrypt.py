@@ -28,7 +28,9 @@ def encrypt(**data):
     return str(outfile)
 
 
-@generate_flow_definition
+@generate_flow_definition(modifiers={
+    'encrypt': {'ExceptionOnActionFailure': True}
+})
 class Encrypt(GladierBaseTool):
     """
     The Encrypt tool takes in a file and a password to perform

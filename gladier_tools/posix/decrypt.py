@@ -32,7 +32,9 @@ def decrypt(**data):
         raise ValueError(f'Failed to decrypt {infile} with decrypt_key given.') from None
 
 
-@generate_flow_definition
+@generate_flow_definition(modifiers={
+    'decrypt': {'ExceptionOnActionFailure': True}
+})
 class Decrypt(GladierBaseTool):
     """
     Decrypt tool takes in an encrypted file and a password to perform
