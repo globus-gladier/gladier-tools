@@ -6,17 +6,16 @@ def untar(**data):
     import pathlib
 
     untar_input = pathlib.Path(data['untar_input']).expanduser()
-    untar_output = None
     if data.get('untar_output', ''):
         untar_output = pathlib.Path(data['untar_output']).expanduser()
+    else:
+        untar_output = untar_input.parent / untar_input.stem
 
     with tarfile.open(untar_input) as file:
-        if untar_output:
-            untar_output.mkdir(parents=True)
-            file.extractall(untar_output)
-        else:
-            file.extractall()
+        untar_output.mkdir(parents=True, exist_ok=True)
+        file.extractall(untar_output)
     return str(untar_output)
+
 
 @generate_flow_definition(modifiers={
     'untar': {'ExceptionOnActionFailure': True,
@@ -32,7 +31,7 @@ class UnTar(GladierBaseTool):
     :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.  # noqa
     :returns path: The name of the newly created archive.
     """
-    
+
     funcx_functions = [untar]
     required_input = [
             'untar_input',
