@@ -17,10 +17,8 @@ def decrypt(**data):
 
     infile = pathlib.Path(data['decrypt_input']).expanduser()
     outfile = data.get('decrypt_output', None)
-
     if outfile is None:
-            outfile = infile.parent / infile.stem
-    outfile.expanduser()
+        outfile = (infile.parent / infile.stem).expanduser()
 
     try:
         with open(infile, 'rb') as in_file:
