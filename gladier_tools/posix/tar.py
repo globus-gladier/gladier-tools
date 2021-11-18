@@ -8,20 +8,20 @@ def tar(**data):
 
     tar_input = pathlib.Path(data['tar_input']).expanduser()
     tar_output = data.get('tar_output', f'{tar_input}.tgz')
-
+    tar_output = pathlib.Path(tar_output).expanduser()
     # Move to the parent directory before archiving. This ensures the
     # archive does not contain unnecessary path hierarchy.
     os.chdir(tar_input.parent)
     with tarfile.open(tar_output, 'w:gz') as tf:
         tf.add(tar_input.name)
 
-    return tar_output
+    return str(tar_output)
+
 
 @generate_flow_definition(modifiers={
     'tar': {'ExceptionOnActionFailure': True,
-                   'WaitTime': 300}
+            'WaitTime': 300}
 })
-
 class Tar(GladierBaseTool):
     """
     The Tar tool makes it possible to create Tar archives from folders.
