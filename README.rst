@@ -33,5 +33,5 @@ Install with the following:
 
    pip install gladier-tools
 
-See the `Read-The-Docs <https://gladier.readthedocs.io/en/stable/tools/index.html>`_ page for a
+See the `Read-The-Docs <https://gladier.readthedocs.io/en/stable/gladier_tools/index.html>`_ page for a
 list of available tools and how to use them.
