@@ -16,9 +16,10 @@ def decrypt(**data):
     fernet = Fernet(key)
 
     infile = pathlib.Path(data['decrypt_input']).expanduser()
-    outfile = data.get('decrypt_output', None)
-    if outfile is None:
-        outfile = (infile.parent / infile.stem).expanduser()
+    if data.get('decrypt_output'):
+        outfile = pathlib.Path(data['decrypt_output']).expanduser()
+    else:
+        outfile = infile.parent / infile.stem
 
     try:
         with open(infile, 'rb') as in_file:

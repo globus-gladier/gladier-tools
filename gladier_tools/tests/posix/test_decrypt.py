@@ -42,5 +42,6 @@ def test_decrypt_custom_output():
 
 def test_decrypt_custom_output_home():
     with patch('builtins.open', mock_open(read_data=MOCK_ENCRYPTED_DATA)):
-        result = decrypt(**{'decrypt_input': '~/foo.aes', 'decrypt_key': 'my_secret'})
-    assert result == str(pathlib.Path('~/foo').expanduser())
+        result = decrypt(**{'decrypt_input': '~/foo.aes', 'decrypt_output': '~/bar',
+                         'decrypt_key': 'my_secret'})
+    assert result == str(pathlib.Path('~/bar').expanduser())
