@@ -17,17 +17,15 @@ def decrypt(**data):
 
     infile = pathlib.Path(data['decrypt_input']).expanduser()
     outfile = data.get('decrypt_output', None)
-
     if outfile is None:
-            outfile = infile.parent / infile.stem
-    outfile.expanduser()
+        outfile = (infile.parent / infile.stem).expanduser()
 
     try:
         with open(infile, 'rb') as in_file:
             out_data = fernet.decrypt(in_file.read())
         with open(outfile, 'wb') as out_file:
             out_file.write(out_data)
-        return outfile
+        return str(outfile)
     except InvalidToken:
         # Re-raise as value error -- FuncX may not understand the InvalidToken exception
         raise ValueError(f'Failed to decrypt {infile} with decrypt_key given.') from None

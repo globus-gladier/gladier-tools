@@ -8,7 +8,7 @@ def untar(**data):
     untar_input = pathlib.Path(data['untar_input']).expanduser()
     untar_output = None
     if data.get('untar_output', ''):
-        untar_output = pathlib.Path(data['untar_output'])
+        untar_output = pathlib.Path(data['untar_output']).expanduser()
 
     with tarfile.open(untar_input) as file:
         if untar_output:
