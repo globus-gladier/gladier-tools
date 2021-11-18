@@ -25,7 +25,7 @@ def encrypt(**data):
         encrypted = fernet.encrypt(file.read())
     with open(outfile, 'wb+') as encrypted_file:
         encrypted_file.write(encrypted)
-    return outfile
+    return str(outfile)
 
 
 @generate_flow_definition

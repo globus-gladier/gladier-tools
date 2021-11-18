@@ -27,7 +27,7 @@ def decrypt(**data):
             out_data = fernet.decrypt(in_file.read())
         with open(outfile, 'wb') as out_file:
             out_file.write(out_data)
-        return outfile
+        return str(outfile)
     except InvalidToken:
         # Re-raise as value error -- FuncX may not understand the InvalidToken exception
         raise ValueError(f'Failed to decrypt {infile} with decrypt_key given.') from None
