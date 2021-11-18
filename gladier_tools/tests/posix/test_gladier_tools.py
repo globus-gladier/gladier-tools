@@ -25,4 +25,5 @@ def test_use_gladier_tool(import_string):
     @generate_flow_definition
     class MyGladierClass(GladierBaseClient):
         gladier_tools = [import_string]
-    MyGladierClass()
+
+    MyGladierClass(auto_login=False)
