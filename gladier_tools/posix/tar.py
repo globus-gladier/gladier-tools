@@ -18,7 +18,7 @@ def tar(**data):
     return tar_output
 
 @generate_flow_definition(modifiers={
-    'untar_file': {'ExceptionOnActionFailure': True,
+    'tar': {'ExceptionOnActionFailure': True,
                    'WaitTime': 300}
 })
 
