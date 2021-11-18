@@ -20,3 +20,27 @@ def test_decrypt_bad_secret():
     with patch('builtins.open', mock_open(read_data=MOCK_ENCRYPTED_DATA)):
         with pytest.raises(ValueError):
             decrypt(**{'decrypt_input': 'foo.aes', 'decrypt_key': 'bad_secret'})
+
+
+def test_decrypt_home():
+    with patch('builtins.open', mock_open(read_data=MOCK_ENCRYPTED_DATA)):
+        result = decrypt(**{'decrypt_input': '~/foo.aes', 'decrypt_key': 'my_secret'})
+    assert result == str(pathlib.Path('~/foo').expanduser())
+
+
+def test_decrypt_buried_path():
+    with patch('builtins.open', mock_open(read_data=MOCK_ENCRYPTED_DATA)):
+        result = decrypt(**{'decrypt_input': '~/bar/baz/foo.aes', 'decrypt_key': 'my_secret'})
+    assert result == str(pathlib.Path('~/bar/baz/foo').expanduser())
+
+
+def test_decrypt_custom_output():
+    with patch('builtins.open', mock_open(read_data=MOCK_ENCRYPTED_DATA)):
+        result = decrypt(**{'decrypt_input': 'foo.aes', 'decrypt_key': 'my_secret'})
+    assert result == 'foo'
+
+
+def test_decrypt_custom_output_home():
+    with patch('builtins.open', mock_open(read_data=MOCK_ENCRYPTED_DATA)):
+        result = decrypt(**{'decrypt_input': '~/foo.aes', 'decrypt_key': 'my_secret'})
+    assert result == str(pathlib.Path('~/foo').expanduser())
