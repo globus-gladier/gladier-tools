@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.3.5](https://github.com/globus-gladier/gladier_tools/compare/v0.3.4...v0.3.5) (2021-11-18)
 
+### Bug FIxes
+
+* fix: tar not expanding ~ for output dirs
+* fix: untar output dir being incorrectly chosen if not specified
+
 ### [0.3.4](https://github.com/globus-gladier/gladier_tools/compare/v0.3.3...v0.3.4) (2021-11-18)
 
 
