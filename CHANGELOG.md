@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.4](https://github.com/globus-gladier/gladier_tools/compare/v0.3.3...v0.3.4) (2021-11-18)
+
+
+### Bug Fixes
+
+* decrypt raises ValueError on bad key ([#44](https://github.com/globus-gladier/gladier_tools/issues/44)) ([11b52a8](https://github.com/globus-gladier/gladier_tools/commit/11b52a8fb6a98cafdf14c491284666b7234dd2f3))
+* Untar using old version of funcx action provider ([#41](https://github.com/globus-gladier/gladier_tools/issues/41)) ([3d6e177](https://github.com/globus-gladier/gladier_tools/commit/3d6e177c7bef920d52061ffa36970a2cdaf5ab55))
+
 ### [0.3.3](https://github.com/globus-gladier/gladier_tools/compare/v0.3.2...v0.3.3) (2021-11-17)
 
 
