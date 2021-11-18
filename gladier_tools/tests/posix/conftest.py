@@ -2,6 +2,7 @@ import pytest
 import tarfile
 from unittest.mock import Mock
 
+
 @pytest.fixture
 def mock_tar(monkeypatch):
     mock_tf = Mock()

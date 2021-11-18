@@ -3,33 +3,34 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 def decrypt(**data):
 
-    import os
-    from cryptography.fernet import Fernet
+    import pathlib
+    import base64
+    from cryptography.fernet import Fernet, InvalidToken
     from cryptography.hazmat.primitives import hashes
     from cryptography.hazmat.primitives.kdf.concatkdf import ConcatKDFHash
-    import base64
 
     password = bytes(data['decrypt_key'], 'utf-8')
     ckdf = ConcatKDFHash(algorithm=hashes.SHA256(), length=32,
-                         otherinfo=None, )
+                         otherinfo=None)
     key = base64.urlsafe_b64encode(ckdf.derive(password))
     fernet = Fernet(key)
 
-    infile = data['decrypt_input']
-    if '~' in infile:
-        infile = os.path.expanduser(infile)
+    infile = pathlib.Path(data['decrypt_input']).expanduser()
+    outfile = data.get('decrypt_output', None)
 
-    outfile = data.get('decrypt_output', infile[:len(infile)-4])
-    print(outfile)
-    if '~' in outfile:
-        outfile = os.path.expanduser(outfile)
+    if outfile is None:
+            outfile = infile.parent / infile.stem
+    outfile.expanduser()
 
-    with open(infile, 'rb') as file:
-        encrypted = file.read()
-    decrypted = fernet.decrypt(encrypted)
-    with open(outfile, 'wb') as out:
-        out.write(decrypted)
-    return outfile
+    try:
+        with open(infile, 'rb') as in_file:
+            out_data = fernet.decrypt(in_file.read())
+        with open(outfile, 'wb') as out_file:
+            out_file.write(out_data)
+        return outfile
+    except InvalidToken:
+        # Re-raise as value error -- FuncX may not understand the InvalidToken exception
+        raise ValueError(f'Failed to decrypt {infile} with decrypt_key given.') from None
 
 
 @generate_flow_definition
