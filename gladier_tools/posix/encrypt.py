@@ -40,6 +40,10 @@ class Encrypt(GladierBaseTool):
     It has not been found to be compatible with 3rd party encryption/decryption
     tools.
 
+    FuncX Functions:
+
+    * encrypt (funcx_endpoint_compute)
+
     :param encrypt_input: Path to the file which needs to be encrypted.
     :param encrypt_output: Custom path to outputfile. Default is the same
         file with the '.aes' suffix added

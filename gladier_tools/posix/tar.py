@@ -24,7 +24,9 @@ def tar(**data):
 })
 class Tar(GladierBaseTool):
     """
-    The Tar tool makes it possible to create Tar archives from folders.
+    The Tar tool makes it possible to create Tar archives from folders. FuncX Functions:
+
+    * tar (funcx_endpoint_compute)
 
     :param tar_input: Input directory to archive.
     :param tar_output: (optional) output file to save the new archive. Defaults to the original

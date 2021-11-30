@@ -54,6 +54,10 @@ class AsymmetricDecrypt(GladierBaseTool):
     It has not been found to be compatible with 3rd party encryption/decryption
     tools.
 
+    FuncX Functions:
+
+    * asymmetric_decrypt (funcx_endpoint_compute)
+
     :param private_key_path: Path to the id_rsa file which contains
         the RSA private key. Defaults to ~/.ssh/id_rsa if not passed in.
     :param asym_decrypt_file: File which needs to be decrypted.

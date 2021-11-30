@@ -23,7 +23,9 @@ def untar(**data):
 })
 class UnTar(GladierBaseTool):
     """
-    The UnTar tool makes it possible to extract data from Tar archives.
+    The UnTar tool makes it possible to extract data from Tar archives. FuncX Functions:
+
+    * untar (funcx_endpoint_compute)
 
     :param untar_input: Input directory to archive.
     :param untar_output: (optional) output file to save the new archive. Defaults to the original  # noqa

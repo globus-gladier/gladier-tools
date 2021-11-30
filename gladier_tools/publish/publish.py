@@ -43,7 +43,11 @@ def publish_gather_metadata(**data):
 
 class Publish(GladierBaseTool):
     """This function uses the globus-pilot tool to generate metadata compatible with
-    portals on petreldata.net. Requires globus_pilot>=0.6.0.
+    portals on https://acdc.alcf.anl.gov/. Requires globus_pilot>=0.6.0.
+
+    FuncX Functions:
+
+    * publish_gather_metadata (funcx_endpoint_non_compute)
 
     Publication happens in three steps:
 
@@ -52,6 +56,18 @@ class Publish(GladierBaseTool):
     * PublishTransfer -- Transfers data to the Globus Endpoint selected in Globus Pilot
     * PublishIngest -- Ingest metadata gathered in fist step to Globus Search
 
+    **Note**: This tool needs internet access to fetch Pilot configuration records, which
+    contain the destination endpoint and other project info. The default FuncX endpoint
+    name is `funcx_endpoint_non_compute`. You can change this with the following modifier:
+
+    .. code-block::
+
+        @generate_flow_definition(modifiers={
+            'publish_gather_metadata': {'endpoint': 'funcx_endpoint_non_compute'},
+        })
+
+    More details on modifiers can be found at
+    https://gladier.readthedocs.io/en/latest/gladier/flow_generation.html
 
     NOTE: This tool nests input under the 'pilot' keyword. Submit your input as the following:
 
@@ -61,16 +77,22 @@ class Publish(GladierBaseTool):
             'input': {
                 'pilot': {
                     'dataset': 'foo',
-                    'index': 'my-uuid'
+                    'index': 'my-search-index-uuid',
+                    'project': 'my-pilot-project',
+                    'source_globus_endpoint': 'ddb59aef-6d04-11e5-ba46-22000b92c6ec',
                 }
         }
 
-    :param dataset: Path to file or directory
+    :param dataset: Path to file or directory. Used by Pilot to gather metadata, and set as the
+        source for transfer to the publication endpoint configured in Pilot.
     :param destination: relative location under project directory to place dataset (Default `/`)
     :param source_globus_endpoint: The Globus Endpoint of the machine where you are executing
     :param index: The index to ingest this dataset in Globus Search
     :param project: The Pilot project to use for this dataset
     :param groups: A list of additional groups to make these records visible_to.
+    :param funcx_endpoint_non_compute: A funcX endpoint uuid for gathering metadata. Requires
+        internet access.
+
 
     Requires: the 'globus-pilot' package to be installed.
     """

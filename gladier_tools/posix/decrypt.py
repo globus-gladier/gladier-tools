@@ -44,6 +44,10 @@ class Decrypt(GladierBaseTool):
     It has not been found to be compatible with 3rd party
     encryption/decryption tools.
 
+    FuncX Functions:
+
+    * decrypt (funcx_endpoint_compute)
+
     :param decrypt_input: Path to the file which needs to be decrypted.
     :param decrypt_key: Symmetric key or "password" which will be used
         to decrypt the encrypted file. Must be the same key that was
