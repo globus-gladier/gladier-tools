@@ -46,6 +46,10 @@ class AsymmetricEncrypt(GladierBaseTool):
     It has not been found to be compatible with 3rd party encryption/decryption
     tools.
 
+    FuncX Functions:
+
+    * asymmetric_encrypt (funcx_endpoint_compute)
+
     :param public_key_path: Path to the .pub file which contains
         the RSA public key. Defaults to ~/.ssh/id_rsa.pub
     :param asym_encrypt_file: File which needs to be encrypted.
