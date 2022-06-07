@@ -1,0 +1,97 @@
+from gladier import GladierBaseTool, generate_flow_definition
+
+
+def shell_cmd(
+    args,
+    arg_sep_char=" ",
+    capture_output=False,
+    cwd=None,
+    env=None,
+    timeout=60,
+    exception_on_error=False,
+    input_path=None,
+    **kwargs,
+):
+    """Run a command in a shell with various options. Suitable for use as a
+    funcx function.
+
+    Args:
+        args: Arguments to the command. Can be either a list of strings
+            containing command and parameters, or a single string with command
+            and parameters together.
+        arg_sep_char: If the args val is a string, the character that separates
+            the various arguments. By default, it is space.
+        capture_output: Whether output should be captured. If so, the return
+            value will contain captured text. Beware of capturing too much text,
+            especially in funcx and Globus Flows use cases where output size is
+            limited.
+        cwd: [Optional] The directory to run the command from. When used in funcx, the run
+            directory may be unpredictable based on how the funcx endpoint is
+            started and configured.
+        env: [Optional] A dictionary of environment variables to set
+        timeout: How long the command should be allowed to run. Default is 60
+            seconds.
+        exception_on_error: If the command fails, should an exception be raised
+            or should just the (presumably non-zero) return code be returned.
+            Defaults to False.
+        input_path: A path to a file which should be used as the standard input
+            to the command. When not provided, stdin does not exist so attempts
+            to read from it will result in an error.
+        **kwargs:
+        nil:
+
+    Returns:
+        A tuple containing the return code of the command execution, the string
+        of the standard out and standard error (if capture_output is True)
+    """
+
+    import subprocess
+    import os
+
+    # If the args are provided as a string (instead of a list), separate them
+    # into a list removing dupes of the separator char
+    if isinstance(args, str):
+        args = [a for a in args.split(arg_sep_char) if len(a) > 0]
+
+    assert env is None or isinstance(env, dict)
+    assert timeout is None or isinstance(timeout, int)
+    assert input_path is None or isinstance(input_path, str)
+
+    if cwd is not None:
+        cwd = os.path.expanduser(cwd)
+
+    if input_path is not None:
+        input_path = os.path.expanduser(input_path)
+
+    run_args = {
+        "args": " ".join(args),
+        "shell": True,
+        "cwd": cwd,
+        "timeout": timeout,
+        "check": exception_on_error,
+        "capture_output": capture_output,
+        "env": env,
+    }
+    if capture_output:
+        run_args["text"] = True
+
+    # Remove Nones from the arguments
+    run_args = {k: v for k, v in run_args.items() if v is not None}
+
+    in_file = None
+    if input_path is not None:
+        in_file = open(input_path, "r")
+        run_args["stdin"] = in_file
+
+    res = subprocess.run(**run_args)
+
+    if in_file is not None:
+        in_file.close()
+
+    return res.returncode, res.stdout, res.stderr
+
+
+@generate_flow_definition
+class ShellCmdTool(GladierBaseTool):
+    funcx_functions = [shell_cmd]
+    required_input = ["args"]
