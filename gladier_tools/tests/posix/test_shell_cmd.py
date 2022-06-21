@@ -1,5 +1,6 @@
 import os
 import subprocess
+import tempfile
 from typing import Any, Dict, List, NamedTuple, Optional, Type, Union
 
 import pytest
@@ -12,6 +13,8 @@ class Case(NamedTuple):
     cwd: Optional[str] = None
     env: Optional[Dict[str, str]] = None
     input_path: Optional[str] = None
+    output_path: Optional[bool] = None
+    error_path: Optional[bool] = None
     exception_on_error: Optional[bool] = None
     expected_returncode: int = 0
     expected_exception: Optional[Type[Exception]] = None
@@ -33,6 +36,7 @@ class Case(NamedTuple):
 cases = [
     Case(args="ls"),
     Case(args=["ls", "-a"], expected_stdout=".."),
+    Case(args=["ls", "-a"], expected_stdout="..", output_path=True),
     Case(args="pwd", expected_stdout="/", cwd="~/"),
     Case(
         args=["echo in_cmd", "pos1", "pos2"],
@@ -55,7 +59,25 @@ cases = [
 def test_shell_cmd(test_case: Case):
     call_args = test_case.to_call_dict()
     try:
+        if test_case.output_path:
+            output_file, output_path = tempfile.mkstemp()
+            call_args["output_path"] = output_path
+            call_args["capture_output"] = False
+        if test_case.error_path:
+            error_file, error_path = tempfile.mkstemp()
+            call_args["error_path"] = error_path
+            call_args["capture_output"] = False
         returncode, stdout, stderr = shell_cmd(**call_args)
+        if test_case.output_path:
+            stdout = os.read(output_file, 1024 * 1024)
+            stdout = stdout.decode("utf-8")
+            os.close(output_file)
+            os.remove(output_path)
+        if test_case.error_path:
+            stderr = os.read(output_file, 1024 * 1024)
+            stderr = stderr.decode("utf-8")
+            os.close(error_file)
+            os.remove(error_path)
     except Exception as e:
         assert type(e) == test_case.expected_exception
         return

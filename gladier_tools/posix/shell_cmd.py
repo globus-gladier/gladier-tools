@@ -10,6 +10,8 @@ def shell_cmd(
     timeout=60,
     exception_on_error=False,
     input_path=None,
+    output_path=None,
+    error_path=None,
     **kwargs,
 ):
     """Run a command in a shell with various options. Suitable for use as a
@@ -25,8 +27,8 @@ def shell_cmd(
             value will contain captured text. Beware of capturing too much text,
             especially in funcx and Globus Flows use cases where output size is
             limited.
-        cwd: [Optional] The directory to run the command from. When used in funcx, the run
-            directory may be unpredictable based on how the funcx endpoint is
+        cwd: [Optional] The directory to run the command from. When used in funcx,the
+            run directory may be unpredictable based on how the funcx endpoint is
             started and configured.
         env: [Optional] A dictionary of environment variables to set
         timeout: How long the command should be allowed to run. Default is 60
@@ -37,6 +39,10 @@ def shell_cmd(
         input_path: A path to a file which should be used as the standard input
             to the command. When not provided, stdin does not exist so attempts
             to read from it will result in an error.
+        output_path: A path to a file which should be used to capture the output
+            (stdout) of the command. This cannot be set if `capture_output` is set.
+        error_path: A path to a file which should be used to capture the error output
+            (stderr) of the command. This cannot be set if `capture_output` is set.
         **kwargs:
         nil:
 
@@ -45,8 +51,8 @@ def shell_cmd(
         of the standard out and standard error (if capture_output is True)
     """
 
-    import subprocess
     import os
+    import subprocess
 
     # If the args are provided as a string (instead of a list), separate them
     # into a list removing dupes of the separator char
@@ -56,6 +62,12 @@ def shell_cmd(
     assert env is None or isinstance(env, dict)
     assert timeout is None or isinstance(timeout, int)
     assert input_path is None or isinstance(input_path, str)
+    assert output_path is None or (
+        isinstance(output_path, str) and capture_output is False
+    )
+    assert error_path is None or (
+        isinstance(error_path, str) and capture_output is False
+    )
 
     if cwd is not None:
         cwd = os.path.expanduser(cwd)
@@ -83,10 +95,26 @@ def shell_cmd(
         in_file = open(input_path, "r")
         run_args["stdin"] = in_file
 
-    res = subprocess.run(**run_args)
+    out_file = None
+    if output_path is not None:
+        out_file = open(output_path, "w")
+        run_args["stdout"] = out_file
 
-    if in_file is not None:
-        in_file.close()
+    err_file = None
+    if error_path is not None:
+        err_file = open(error_path, "w")
+        run_args["stderr"] = err_file
+
+    try:
+        res = subprocess.run(**run_args)
+
+    finally:
+        if in_file is not None:
+            in_file.close()
+        if out_file is not None:
+            out_file.close()
+        if err_file is not None:
+            err_file.close()
 
     return res.returncode, res.stdout, res.stderr
 
