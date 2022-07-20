@@ -8,7 +8,7 @@ def shell_cmd(
     cwd=None,
     env=None,
     timeout=60,
-    exception_on_error=False,
+    exception_on_error=True,
     input_path=None,
     output_path=None,
     error_path=None,
@@ -119,7 +119,9 @@ def shell_cmd(
     return res.returncode, res.stdout, res.stderr
 
 
-@generate_flow_definition
+@generate_flow_definition(modifiers={
+    "shell_cmd": {"ExceptionOnActionFailure": True}
+})
 class ShellCmdTool(GladierBaseTool):
     funcx_functions = [shell_cmd]
     required_input = ["args"]
