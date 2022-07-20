@@ -43,11 +43,11 @@ cases = [
         expected_stdout="in_cmd pos1 pos2",
     ),
     Case(args="cat", expected_stdout="pytest", input_path=os.path.abspath(__file__)),
-    Case(args="NoT_ReallY_A_Cmd", expected_returncode=127),
+    Case(args="NoT_ReallY_A_Cmd", expected_exception=subprocess.CalledProcessError),
     Case(
         args="NoT_ReallY_A_Cmd",
-        exception_on_error=True,
-        expected_exception=subprocess.CalledProcessError,
+        exception_on_error=False,
+        expected_returncode=127,
     ),
     Case(
         args="echo $TEST_VAR", env={"TEST_VAR": "test_val"}, expected_stdout="test_val"
