@@ -122,4 +122,4 @@ def shell_cmd(
 @generate_flow_definition
 class ShellCmdTool(GladierBaseTool):
     funcx_functions = [shell_cmd]
-    required_input = ["args"]
+    required_input = ["args", "funcx_endpoint_compute"]
