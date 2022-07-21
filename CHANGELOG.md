@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/globus-gladier/gladier_tools/compare/v0.3.6...v0.4.0) (2022-07-21)
+
+
+## [0.4.0](https://github.com/globus-gladier/gladier_tools/compare/v0.3.6...v0.4.0) (2022-07-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update Requirements to use Gladier v0.6.3 or higher
+    * Older versions of Gladier will no longer be supported
+
+### Features
+
+* Add new POSIX Shell CMD Gladier Tool ([58d49b953](https://github.com/globus-gladier/gladier_tools/commit/58d49b9539d09c24ddf1e2ae1078e91d0b924a6f))
+
+### Other Changes
+
+* Update Requirements to use Gladier v0.6.3 or higher ([4d1c174](https://github.com/globus-gladier/gladier_tools/commit/4d1c17416e6dc5b637f46034f72722ab6f126a2b))
+
 ### [0.3.6](https://github.com/globus-gladier/gladier_tools/compare/v0.3.5...v0.3.6) (2021-11-18)
 
 ### Bug Fixes
