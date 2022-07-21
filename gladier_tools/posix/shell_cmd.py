@@ -15,7 +15,16 @@ def shell_cmd(
     **kwargs,
 ):
     """Run a command in a shell with various options. Suitable for use as a
-    funcx function.
+    funcx function. On anything other than exit success (returning 0), an
+    exception will be raised, the stack trace will be propogated, and the flow
+    will be halted. On exit success, the return code, stdout, and sterr are returned
+    in a list in the format:
+
+    [0, "Standard Output Text", "Standard Error Text"]
+
+    Note: stdout and sterr will always be None unless ``capture_output`` is set.
+
+
 
     Args:
         args: Arguments to the command. Can be either a list of strings
@@ -35,7 +44,7 @@ def shell_cmd(
             seconds.
         exception_on_error: If the command fails, should an exception be raised
             or should just the (presumably non-zero) return code be returned.
-            Defaults to False.
+            Defaults to True.
         input_path: A path to a file which should be used as the standard input
             to the command. When not provided, stdin does not exist so attempts
             to read from it will result in an error.
