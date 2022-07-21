@@ -133,4 +133,4 @@ def shell_cmd(
 })
 class ShellCmdTool(GladierBaseTool):
     funcx_functions = [shell_cmd]
-    required_input = ["args"]
+    required_input = ["args", "funcx_endpoint_compute"]
