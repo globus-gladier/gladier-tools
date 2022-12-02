@@ -14,52 +14,6 @@ def shell_cmd(
     error_path=None,
     **kwargs,
 ):
-    """Run a command in a shell with various options. Suitable for use as a
-    funcx function. On anything other than exit success (returning 0), an
-    exception will be raised, the stack trace will be propogated, and the flow
-    will be halted. On exit success, the return code, stdout, and sterr are returned
-    in a list in the format:
-
-    [0, "Standard Output Text", "Standard Error Text"]
-
-    Note: stdout and sterr will always be None unless ``capture_output`` is set.
-
-
-
-    Args:
-        args: Arguments to the command. Can be either a list of strings
-            containing command and parameters, or a single string with command
-            and parameters together.
-        arg_sep_char: If the args val is a string, the character that separates
-            the various arguments. By default, it is space.
-        capture_output: Whether output should be captured. If so, the return
-            value will contain captured text. Beware of capturing too much text,
-            especially in funcx and Globus Flows use cases where output size is
-            limited.
-        cwd: [Optional] The directory to run the command from. When used in funcx,the
-            run directory may be unpredictable based on how the funcx endpoint is
-            started and configured.
-        env: [Optional] A dictionary of environment variables to set
-        timeout: How long the command should be allowed to run. Default is 60
-            seconds.
-        exception_on_error: If the command fails, should an exception be raised
-            or should just the (presumably non-zero) return code be returned.
-            Defaults to True.
-        input_path: A path to a file which should be used as the standard input
-            to the command. When not provided, stdin does not exist so attempts
-            to read from it will result in an error.
-        output_path: A path to a file which should be used to capture the output
-            (stdout) of the command. This cannot be set if `capture_output` is set.
-        error_path: A path to a file which should be used to capture the error output
-            (stderr) of the command. This cannot be set if `capture_output` is set.
-        **kwargs:
-        nil:
-
-    Returns:
-        A tuple containing the return code of the command execution, the string
-        of the standard out and standard error (if capture_output is True)
-    """
-
     import os
     import subprocess
 
@@ -132,5 +86,50 @@ def shell_cmd(
     "shell_cmd": {"ExceptionOnActionFailure": True}
 })
 class ShellCmdTool(GladierBaseTool):
+    """Run a command in a shell with various options. Suitable for use as a
+    funcx function. On anything other than exit success (returning 0), an
+    exception will be raised, the stack trace will be propogated, and the flow
+    will be halted. On exit success, the return code, stdout, and sterr are returned
+    in a list in the format:
+
+    [0, "Standard Output Text", "Standard Error Text"]
+
+    Note: stdout and sterr will always be None unless ``capture_output`` is set.
+
+
+
+    Args:
+        args: Arguments to the command. Can be either a list of strings
+            containing command and parameters, or a single string with command
+            and parameters together.
+        arg_sep_char: If the args val is a string, the character that separates
+            the various arguments. By default, it is space.
+        capture_output: Whether output should be captured. If so, the return
+            value will contain captured text. Beware of capturing too much text,
+            especially in funcx and Globus Flows use cases where output size is
+            limited.
+        cwd: [Optional] The directory to run the command from. When used in funcx,the
+            run directory may be unpredictable based on how the funcx endpoint is
+            started and configured.
+        env: [Optional] A dictionary of environment variables to set
+        timeout: How long the command should be allowed to run. Default is 60
+            seconds.
+        exception_on_error: If the command fails, should an exception be raised
+            or should just the (presumably non-zero) return code be returned.
+            Defaults to True.
+        input_path: A path to a file which should be used as the standard input
+            to the command. When not provided, stdin does not exist so attempts
+            to read from it will result in an error.
+        output_path: A path to a file which should be used to capture the output
+            (stdout) of the command. This cannot be set if `capture_output` is set.
+        error_path: A path to a file which should be used to capture the error output
+            (stderr) of the command. This cannot be set if `capture_output` is set.
+        **kwargs:
+        nil:
+
+    Returns:
+        A tuple containing the return code of the command execution, the string
+        of the standard out and standard error (if capture_output is True)
+    """
     funcx_functions = [shell_cmd]
     required_input = ["args", "funcx_endpoint_compute"]
