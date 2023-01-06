@@ -5,6 +5,20 @@ def untar(**data):
     import tarfile
     import pathlib
 
+    def safe_extract(tar: tarfile.TarFile, path: pathlib.Path):
+        """Check all paths in a tarfile before extraction. It's possible that
+        paths are non-relative and would otherwise extract to a non-local or
+        absolute path.
+
+        :raises ValueError: If a relative path within the tar would extract to
+            a location outside of a tar"""
+        for member in tar.getmembers():
+            member_path = path / member.name
+            # Raises ValueError if member_path not relative to path
+            member_path.relative_to(path)
+
+        tar.extractall(path)
+
     untar_input = pathlib.Path(data['untar_input']).expanduser()
     if data.get('untar_output', ''):
         untar_output = pathlib.Path(data['untar_output']).expanduser()
@@ -13,29 +27,8 @@ def untar(**data):
 
     with tarfile.open(untar_input) as file:
         untar_output.mkdir(parents=True, exist_ok=True)
-        
-        import os
-        
-        def is_within_directory(directory, target):
-            
-            abs_directory = os.path.abspath(directory)
-            abs_target = os.path.abspath(target)
-        
-            prefix = os.path.commonprefix([abs_directory, abs_target])
-            
-            return prefix == abs_directory
-        
-        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-        
-            for member in tar.getmembers():
-                member_path = os.path.join(path, member.name)
-                if not is_within_directory(path, member_path):
-                    raise Exception("Attempted Path Traversal in Tar File")
-        
-            tar.extractall(path, members, numeric_owner=numeric_owner) 
-            
-        
         safe_extract(file, untar_output)
+
     return str(untar_output)
 
 
@@ -53,7 +46,9 @@ class UnTar(GladierBaseTool):
     :param untar_output: (optional) output file to save the new archive. Defaults to the original  # noqa
                        input file with an extension '.tgz' removed.
     :param funcx_endpoint_compute: By default, uses the ``compute`` funcx endpoint.  # noqa
-    :returns path: The name of the newly created archive.
+    :returns path: The output location of the extracted archive
+    :raises ValueError: If any files within the tar would extract to a non-relative location
+    :raises FileNotFoundError: If the file does not exist.
     """
 
     funcx_functions = [untar]
