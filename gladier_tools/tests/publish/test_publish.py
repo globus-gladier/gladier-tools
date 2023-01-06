@@ -20,7 +20,7 @@ def pilot_input():
 def mock_pilot(monkeypatch):
     mock_inst = Mock()
     mock_client = Mock(return_value=mock_inst)
-    mock_inst.get_globus_transfer_paths.return_value = [('src_path', 'dest_path')]
+    mock_inst.get_globus_transfer_paths.return_value = [('/src_path', 'dest_path')]
     monkeypatch.setattr(pilot.client, 'PilotClient', mock_client)
     return mock_client
 
