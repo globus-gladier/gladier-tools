@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [0.4.0](https://github.com/globus-gladier/gladier_tools/compare/v0.3.6...v0.4.0) (2022-07-21)
+### [0.4.1](https://github.com/globus-gladier/gladier_tools/compare/v0.4.0...v0.4.1) (2023-01-10)
+
+
+### Features
+
+* Add guest collection support for publish tool ([#61](https://github.com/globus-gladier/gladier_tools/issues/61)) ([f3a8060](https://github.com/globus-gladier/gladier_tools/commit/f3a8060d05eac661db0de61187a3e1b692f853a3))
+
+
+### Bug Fixes
+
+* Add shell description to the tool not the function ([#60](https://github.com/globus-gladier/gladier_tools/issues/60)) ([aa980d8](https://github.com/globus-gladier/gladier_tools/commit/aa980d8c44e32a9dc96ab553ed56152701f2f962))
+* Ensure untar cannot unpack files outside of specified locations (CVE-2007-4559) ([#57](https://github.com/globus-gladier/gladier-tools/pull/57)) ([f5d11f406](https://github.com/globus-gladier/gladier-tools/pull/57/commits/f5d11f4060f995c745d7628e92b5f67ca6f68ead))  ([#62](https://github.com/globus-gladier/gladier-tools/pull/62))
+---
 
 
 ## [0.4.0](https://github.com/globus-gladier/gladier_tools/compare/v0.3.6...v0.4.0) (2022-07-21)
