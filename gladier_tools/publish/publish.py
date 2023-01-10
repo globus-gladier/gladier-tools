@@ -2,12 +2,22 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 
 def publish_gather_metadata(**data):
+    import pathlib
     import traceback
     from pilot.client import PilotClient
     from pilot.exc import PilotClientException, FileOrFolderDoesNotExist
+
+    def translate_guest_collection_path(collection_basepath, path):
+        try:
+            return f'/{str(pathlib.PosixPath(path).relative_to(collection_basepath))}'
+        except ValueError:
+            raise ValueError(f'POSIX path given "{path}" outside Gloubus Collection '
+                            f'share path: {collection_basepath}') from None
+
     try:
         dataset, destination = data['dataset'], data.get('destination', '/')
         index, project, groups = data['index'], data['project'], data.get('groups', [])
+        source_collection_basepath = data.get('source_collection_basepath', '/')
 
         # Bootstrap Pilot
         pc = PilotClient(config_file=None, index_uuid=index)
@@ -29,7 +39,7 @@ def publish_gather_metadata(**data):
                 'source_endpoint_id': data['source_globus_endpoint'],
                 'destination_endpoint_id': pc.get_endpoint(),
                 'transfer_items': [{
-                    'source_path': src,
+                    'source_path': translate_guest_collection_path(source_collection_basepath, src),
                     'destination_path': dest,
                     # 'recursive': False,  # each file is explicit in pilot, no directories
                 } for src, dest in pc.get_globus_transfer_paths(dataset, destination)]
@@ -87,6 +97,8 @@ class Publish(GladierBaseTool):
         source for transfer to the publication endpoint configured in Pilot.
     :param destination: relative location under project directory to place dataset (Default `/`)
     :param source_globus_endpoint: The Globus Endpoint of the machine where you are executing
+    :param source_collection_basepath: If using a guest collection, the posix path of the guest collection.
+        Used to translate source paths for the transfer step. (Default: `/`)
     :param index: The index to ingest this dataset in Globus Search
     :param project: The Pilot project to use for this dataset
     :param groups: A list of additional groups to make these records visible_to.
