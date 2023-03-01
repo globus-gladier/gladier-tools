@@ -32,7 +32,7 @@ def publish_gather_metadata(**data):
                 'content': pc.gather_metadata(dataset, destination,
                                               custom_metadata=data.get('metadata')),
                 'subject': pc.get_subject_url(short_path),
-                'visible_to': [f'urn:globus:groups:id:{g}' for g in groups + [pc.get_group()]],
+                'visible_to': ['public' if g == 'public' else f'urn:globus:groups:id:{g}' for g in groups + [pc.get_group()]],
                 'search_index': index
             },
             'transfer': {
