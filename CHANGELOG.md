@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/globus-gladier/gladier_tools/compare/v0.4.1...v0.4.2) (2023-03-06)
+
+
+### Bug Fixes
+
+* Publish bug when a pilot index is set to public ([#67](https://github.com/globus-gladier/gladier_tools/issues/67)) ([8469efe](https://github.com/globus-gladier/gladier_tools/commit/8469efef5f915608040d52fe4a3468a0b1f4c41b))
+
 ### [0.4.1](https://github.com/globus-gladier/gladier_tools/compare/v0.4.0...v0.4.1) (2023-01-10)
 
 
