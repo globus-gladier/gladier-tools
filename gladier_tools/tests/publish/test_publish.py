@@ -1,4 +1,5 @@
 import pytest
+import uuid
 import pilot.client
 from pilot.exc import PilotClientException
 from unittest.mock import Mock
@@ -36,3 +37,17 @@ def test_publish_exception(pilot_input, mock_pilot):
     output = publish_gather_metadata(**pilot_input)
     assert 'PilotClientException' in output
     assert 'Something bad happened!' in output
+
+
+def test_publish_with_public_visibility(pilot_input, mock_pilot):
+    mock_pilot.return_value.get_group.return_value = 'public'
+    output = publish_gather_metadata(**pilot_input)
+    assert output['search']['visible_to'][0] == 'public'
+
+
+def test_publish_with_private_group(pilot_input, mock_pilot):
+    mock_group = str(uuid.uuid4())
+    expected = f'urn:globus:groups:id:{mock_group}'
+    mock_pilot.return_value.get_group.return_value = mock_group
+    output = publish_gather_metadata(**pilot_input)
+    assert output['search']['visible_to'][0] == expected
