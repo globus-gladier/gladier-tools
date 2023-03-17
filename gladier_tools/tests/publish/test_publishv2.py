@@ -1,5 +1,7 @@
 import pytest
 import pathlib
+import json
+from datacite import DataCiteMDSClient, schema42
 from gladier_tools.publish.publishv2 import publishv2
 
 mock_data = pathlib.Path(__file__).resolve().parent.parent / 'mock_data/publish/'
@@ -22,6 +24,9 @@ def test_publish(publish_input):
     publishv2(**publish_input).keys() == ('search', 'transfer')
 
 
+def test_json_serializable(publish_input):
+    assert json.dumps(publishv2(**publish_input))
+
 def test_publish_dc(publish_input):
     output = publishv2(**publish_input)
     content = output['search']['content']
@@ -29,20 +34,32 @@ def test_publish_dc(publish_input):
     partial_dc = content['dc'].copy()
     partial_dc.pop('dates')
     assert partial_dc == {
-        'creators': [{'creatorName': ''}],
+        'creators': [{'name': ''}],
+        'identifiers': [
+            {'identifier': 'globus://my_globus_collection/my-new-project/test_dataset_folder',
+             'identifierType': 'GlobusSearchSubject'
+            }
+        ],
         # timestamp contains seconds, which is hard to check. Skip it!
+        # '2023-03-17T17:14:31.832955Z'
         # 'dates': [{'date': '2023-03-16T07:44:14.044091', 'dateType': 'Created'}],
         'formats': ['text/plain'],
-        'publicationYear': 2023,
+        'publicationYear': "2023",
         'publisher': '',
-        'resourceType': {'resourceType': 'Dataset', 'resourceTypeGeneral': 'Dataset'},
+        'types': {'resourceType': 'Dataset', 'resourceTypeGeneral': 'Dataset'},
         'subjects': [],
-        'titles': ['test_dataset_folder'],
-        'version': '1'
+        'titles': [{'title': 'test_dataset_folder'}],
+        'version': '1',
+        'schemaVersion': 'http://datacite.org/schema/kernel-4',
     }
     assert 'dates' in content['dc']
     assert content['dc']['dates'][0]['dateType'] == 'Created'
     assert 'date' in content['dc']['dates'][0]
+
+
+def test_validate_dc(publish_input):
+    dc = publishv2(**publish_input)['search']['content']['dc']
+    assert schema42.validate(dc)
 
 
 def test_publish_files(publish_input):
@@ -70,15 +87,13 @@ def test_publish_files(publish_input):
 
 def test_publish_transfer(publish_input):
     output = publishv2(**publish_input)
-    from pprint import pprint
-    pprint(output['transfer'])
     dataset = publish_input['dataset']
     assert output['transfer'] == {
         'destination_endpoint_id': 'my_globus_collection',
         'source_endpoint_id': 'my_transfer_endpoint',
         'transfer_items': [{
                 'destination_path': str(pathlib.Path('/my-new-project') / dataset.name),
-                'source_path': dataset,
+                'source_path': str(dataset),
             }]
         }
 

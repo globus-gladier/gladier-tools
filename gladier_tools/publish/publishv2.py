@@ -11,7 +11,7 @@ def publishv2(
             visible_to: List[str],
             source_collection_basepath: str = None, 
             destination_url_hostname: str = None,
-            entry_id: str = None,
+            entry_id: str = 'metadata',
             checksum_algorithms: Tuple[str] = ('sha256', 'sha512'),
             metadata: Mapping = None,
             enable_publish: bool = True,
@@ -32,7 +32,7 @@ def publishv2(
 
     def translate_guest_collection_path(collection_basepath, path):
         if not collection_basepath:
-            return path
+            return str(path)
         try:
             return f'/{str(pathlib.PosixPath(path).relative_to(collection_basepath))}'
         except ValueError:
@@ -119,39 +119,47 @@ def publishv2(
                 buf = open_file.read(block_size)
         return alg_instance.hexdigest()
         
-    def get_dc(files: list = None):
+    def get_dc(title, subject: str, files: list = None):
         dt = datetime.datetime.now()
         return {
-            'creators': [{'creatorName': ''}],
-            'dates': [{'date': dt.isoformat(), 'dateType': 'Created'}],
+            'identifiers': [{
+                'identifierType': 'GlobusSearchSubject',
+                'identifier': subject,
+            }],
+            'creators': [{'name': ''}],
+            'dates': [{'date': f'{dt.isoformat()}Z', 'dateType': 'Created'}],
             'formats': list({f['mime_type'] for f in files}),
-            'publicationYear': dt.year,
+            'publicationYear': str(dt.year),
             'publisher': '',
-            'resourceType': {'resourceType': 'Dataset',
-            'resourceTypeGeneral': 'Dataset'},
+            'types': {
+                'resourceType': 'Dataset',
+                'resourceTypeGeneral': 'Dataset'
+            },
             'subjects': [],
-            'titles': [dataset.name],
-            'version': '1'
+            'titles': [{'title': dataset.name}],
+            'version': '1',
+            'schemaVersion': 'http://datacite.org/schema/kernel-4',
         }
 
-    def get_content(metadata):
+    def get_content(title, subject, metadata):
         new_metadata = {}
         if enable_meta_files:
             new_metadata['files'] = get_remote_file_manifest(
                 dataset, destination, destination_url_hostname, checksum_algorithms)
         if enable_meta_dc:
-            new_metadata['dc'] = get_dc(new_metadata.get('files', []))
+            new_metadata['dc'] = get_dc(title, subject, new_metadata.get('files', []))
         new_metadata.update(metadata if metadata is not None else {})
         return new_metadata
 
     dataset = pathlib.Path(dataset)
     destination_path = pathlib.Path(destination) / dataset.name
+    subject = urllib.parse.urlunparse(('globus', destination_collection, str(destination_path), '', '', ''))
     return {
         'search': {
             'id': entry_id,
-            'content': get_content(metadata),
-            'subject': urllib.parse.urlunparse(('globus', destination_collection, str(destination_path), '', '', '')),
-            'visible_to': [visible_to],
+            'content': get_content(dataset.name, subject, metadata),
+            'subject': subject,
+            'visible_to': visible_to,
             'search_index': index
         },
         'transfer': {
