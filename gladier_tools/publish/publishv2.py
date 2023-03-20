@@ -14,6 +14,7 @@ def publishv2(
             entry_id: str = 'metadata',
             checksum_algorithms: Tuple[str] = ('sha256', 'sha512'),
             metadata: Mapping = None,
+            metadata_dc_validation_schema: str = None,
             enable_publish: bool = True,
             enable_transfer: bool = True,
             enable_meta_dc: bool = True,
@@ -25,6 +26,7 @@ def publishv2(
     import pathlib
     import datetime
     import mimetypes
+    import traceback
     try:
         import puremagic
     except ImportError:
@@ -49,9 +51,12 @@ def publishv2(
         """
         def detect_mimetype(filename):
             if puremagic is not None:
-                mimetype = puremagic.magic_file(str(filename))[0].mime_type
-                if mimetype:
-                    return mimetype
+                try:
+                    return puremagic.magic_file(str(filename))[0].mime_type
+                except (IndexError, ValueError):
+                    """Skip puremagic on IndexError (No mimetype could be found) or on ValueError
+                    (file was empty)."""
+                    pass
 
             mt, _ = mimetypes.guess_type(filename, strict=True)
             return mt
@@ -149,6 +154,14 @@ def publishv2(
         if enable_meta_dc:
             new_metadata['dc'] = get_dc(title, subject, new_metadata.get('files', []))
         new_metadata.update(metadata if metadata is not None else {})
+        if enable_meta_dc and metadata_dc_validation_schema:
+            import datacite
+            import jsonschema
+            try:
+                schema = getattr(datacite, metadata_dc_validation_schema)
+                schema.validator.validate(new_metadata['dc'])
+            except jsonschema.exceptions.ValidationError:
+                raise ValueError(traceback.format_exc()) from None
         return new_metadata
 
     dataset = pathlib.Path(dataset)
@@ -220,7 +233,7 @@ class Publishv2(GladierBaseTool):
         'StartAt': 'PublishGatherMetadata',
         'States': {
             'PublishGatherMetadata': {
-                'Comment': 'Say something to start the conversation',
+                'Comment': 'Generate search metadata and a transfer document',
                 'Type': 'Action',
                 'ActionUrl': 'https://automate.funcx.org',
                 'ActionScope': 'https://auth.globus.org/scopes/'
@@ -234,7 +247,7 @@ class Publishv2(GladierBaseTool):
                     }]
                 },
                 'ResultPath': '$.PublishGatherMetadata',
-                'WaitTime': 60,
+                'WaitTime': 600,
                 'Next': 'ChoicePublishTransfer',
             },
             'ChoicePublishTransfer': {
