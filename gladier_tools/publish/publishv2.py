@@ -160,6 +160,10 @@ def publishv2(
             import datacite
             import jsonschema
             try:
+                # Secondary import required due to these not being exposed as public items, even
+                # though the docs recommend using them as such. Explicit imports add them to the
+                # module listing so getattr() will work properly to choose the correct one.
+                from datacite import schema40, schema41, schema42, schema43
                 schema = getattr(datacite, metadata_dc_validation_schema)
                 schema.validator.validate(new_metadata['dc'])
             except jsonschema.exceptions.ValidationError:
