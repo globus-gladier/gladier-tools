@@ -9,11 +9,11 @@ def publishv2(
             destination_collection: str,
             index: str, 
             visible_to: List[str],
+            entry_id: str = 'metadata',
+            metadata: Mapping = None,
             source_collection_basepath: str = None, 
             destination_url_hostname: str = None,
-            entry_id: str = 'metadata',
             checksum_algorithms: Tuple[str] = ('sha256', 'sha512'),
-            metadata: Mapping = None,
             metadata_dc_validation_schema: str = None,
             enable_publish: bool = True,
             enable_transfer: bool = True,
@@ -187,45 +187,76 @@ def publishv2(
 
 
 class Publishv2(GladierBaseTool):
-    """This function uses the globus-pilot tool to generate metadata compatible with
-    portals on https://acdc.alcf.anl.gov/. Requires globus_pilot>=0.6.0.
+    """Publish tooling is an extension to the original publish gladier tool, and allows
+    for similar style publication of files and folders without the globus-pilot requirement.
+
+    Publishv2 allows for specifying a file or folder on a Globus Collection, and "publishing" the
+    data. Publication consists of first gathering metadata on the file or folder, cataloguing the
+    metadata with Globus Search, and transferring the file or folder to a Globus Collection. Additional
+    metadata may be provided for the ingest step, and several options exist for modifying what
+    metadata is automatically gathered.
+
+    Dependencies:
+        None!
+    Optional Dependencies:
+    * puremagic -- Better mimetype detection
+    * datacite -- Validation of Datacite (dc) metadata
+
     FuncX Functions:
-    * publish_gather_metadata (funcx_endpoint_non_compute)
-    Publication happens in three steps:
-    * PublishGatherMetadata -- A funcx function which uses globus-pilot to gather
-      metadata on files or folders
-    * PublishTransfer -- Transfers data to the Globus Endpoint selected in Globus Pilot
-    * PublishIngest -- Ingest metadata gathered in fist step to Globus Search
-    **Note**: This tool needs internet access to fetch Pilot configuration records, which
-    contain the destination endpoint and other project info. The default FuncX endpoint
-    name is `funcx_endpoint_non_compute`. You can change this with the following modifier:
+
+    Publishv2 uses one function called "publishv2". For using custom generated metadata from another
+    function, it can be handy to generate the entire 'publishv2' input block and pass it as flow input
+    instead, which can be done via the following:
+
     .. code-block::
         @generate_flow_definition(modifiers={
-            'publish_gather_metadata': {'endpoint': 'funcx_endpoint_non_compute'},
+            'publishv2': {'payload': '$.MyCustomPayload.details.result[0]'},
         })
-    More details on modifiers can be found at
-    https://gladier.readthedocs.io/en/latest/gladier/flow_generation.html
-    NOTE: This tool nests input under the 'pilot' keyword. Submit your input as the following:
+
+    This tool nests input under the 'publishv2' keyword. An example is below:
+
     .. code-block::
-        {
-            'input': {
-                'pilot': {
-                    'dataset': 'foo',
-                    'index': 'my-search-index-uuid',
-                    'project': 'my-pilot-project',
-                    'source_globus_endpoint': 'ddb59aef-6d04-11e5-ba46-22000b92c6ec',
-                }
-        }
-    :param dataset: Path to file or directory. Used by Pilot to gather metadata, and set as the
-        source for transfer to the publication endpoint configured in Pilot.
-    :param destination: relative location under project directory to place dataset (Default `/`)
-    :param source_globus_endpoint: The Globus Endpoint of the machine where you are executing
+
+        'publishv2': {
+            'dataset': 'foo.txt',
+            'destination': '/~/my-test-dir',
+            'source_collection': 'my-source-globus-collection',
+            'destination_collection': 'my-destination-globus-collection',
+            'index': 'my-globus-search-index-uuid',
+            'visible_to': ['public'],
+            # Ingest and Transfer are disabled by default, allowing for 'dry-run' testing.
+            # 'ingest_enabled': True,
+            # 'transfer_enabled': True,
+        },
+        'funcx_endpoint_non_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+
+    :param dataset: Path to file or directory, which will be catalogued in Globus Search and transferred
+        to the remote destination
+    :param destination: Location on destination collection where data should be stored
+    :param source_collection: The source Globus Collection where data is stored 
+    :param destination_collection: The destination Collection to transfer the ``dataset``
     :param index: The index to ingest this dataset in Globus Search
-    :param project: The Pilot project to use for this dataset
-    :param groups: A list of additional groups to make these records visible_to.
-    :param funcx_endpoint_non_compute: A funcX endpoint uuid for gathering metadata. Requires
-        internet access.
-    Requires: the 'globus-pilot' package to be installed.
+    :param visible_to: A list of URN user or group identities for controlling access or ['public']
+    :param entry_id: (str Default:'metadata') The entry id to use in the Globus Search record
+    :param metadata: (dict) Extra metadata to include in this search record
+    :param source_collection_basepath: Share path if this is a Guest Collection, so that the proper
+        source path can be constructed for the transfer document
+    :param destination_url_hostname: Adds "https_url" to each file in the 'files' document using this
+        provided hostname
+    :param checksum_algorithms: (tuple Default:('sha256', 'sha512')) Checksums to use for file metadata
+    :param metadata_dc_validation_schema: (str) Schema used to validate datacite (dc) metadata. Possible values
+        are (schema31, schema40, schema41, schema42, schema43). Recommended schema43. Requires datacite
+        package installed on funcx endpoint.
+    :param enable_publish: (bool Default: True) Enable the ingest step on the flow. If false, ingest will be
+        skipped.
+    :param enable_transfer: (bool Default: True) Enable Transfer on the flow. If False, data will not be transferred
+        to the remote collection.
+    :param enable_meta_dc: (bool Default: True) Generate datacite metadata during the 'gathering' funcx function step.
+        datacite metadata is stored under the 'dc' key, and can be valiated using metadata_dc_validation_schema=schema43.
+    :param enable_meta_files: (bool Default: True) Generate metadata on all files contained within the dataset. Files
+        conforms to BDBag Remote File Manifests, generating a list of entries for each file with keys:
+        ('url', 'sha256', 'sha512', 'filename', 'length'). Files may also contain extended keys ('mime_type', 'https_url')
+    :param funcx_endpoint_non_compute: A funcX endpoint uuid for gathering metadata.
     """
 
     flow_definition = {
