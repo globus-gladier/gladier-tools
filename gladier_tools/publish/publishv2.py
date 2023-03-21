@@ -153,8 +153,10 @@ def publishv2(
                 dataset, destination, destination_url_hostname, checksum_algorithms)
         if enable_meta_dc:
             new_metadata['dc'] = get_dc(title, subject, new_metadata.get('files', []))
+            if metadata and 'dc' in metadata:
+                new_metadata['dc'].update(metadata.pop('dc'))
         new_metadata.update(metadata if metadata is not None else {})
-        if enable_meta_dc and metadata_dc_validation_schema:
+        if metadata_dc_validation_schema:
             import datacite
             import jsonschema
             try:
