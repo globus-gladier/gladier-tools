@@ -6,6 +6,24 @@ from gladier_tools.publish.publishv2 import publishv2
 
 mock_data = pathlib.Path(__file__).resolve().parent.parent / 'mock_data/publish/'
 
+minimum_dc_metadata = {
+    'creators': [{'name': ''}],
+    'identifiers': [
+        {'identifier': 'globus://my_globus_collection/my-new-project/test_dataset_folder',
+            'identifierType': 'GlobusSearchSubject'
+        }
+    ],
+    'dates': [{'date': '2023-03-16T07:44:14.044091', 'dateType': 'Created'}],
+    'formats': ['text/plain'],
+    'publicationYear': "2023",
+    'publisher': '',
+    'types': {'resourceType': 'Dataset', 'resourceTypeGeneral': 'Dataset'},
+    'subjects': [],
+    'titles': [{'title': 'test_dataset_folder'}],
+    'version': '1',
+    'schemaVersion': 'http://datacite.org/schema/kernel-4',
+}
+
 
 @pytest.fixture
 def publish_input():
@@ -62,6 +80,54 @@ def test_validate_dc(publish_input):
     dc = publishv2(**publish_input)['search']['content']['dc']
     schema42.validator.validate(dc)
     schema43.validator.validate(dc)
+
+
+@pytest.mark.parametrize("schema,metadata", [
+    ("schema40", {
+        'identifier': {
+            'identifier': 'https://doi.org/10.14454/3w3z-sa82',
+            'identifierType': 'DOI'
+        },
+        'creators': [{'creatorName': 'foo'}],
+        'publicationYear': "2023",
+        'publisher': 'FOO',
+        'resourceType': {'resourceType': 'Dataset', 'resourceTypeGeneral': 'Dataset'},
+        'titles': [{'title': 'test_dataset_folder'}],
+    }),
+    ("schema41", {
+        'identifier': {
+            'identifier': 'https://doi.org/10.14454/3w3z-sa82',
+            'identifierType': 'DOI'
+        },
+        'creators': [{'creatorName': 'foo'}],
+        'publicationYear': "2023",
+        'publisher': 'FOO',
+        'resourceType': {'resourceType': 'Dataset', 'resourceTypeGeneral': 'Dataset'},
+        'titles': [{'title': 'test_dataset_folder'}],
+    }),
+    ("schema42", minimum_dc_metadata),
+    ("schema43", minimum_dc_metadata),
+    ]
+)
+def test_eval(schema, metadata, publish_input):
+    publish_input['metadata'] = {'dc': metadata}
+    publish_input['enable_meta_dc'] = False
+    publish_input['metadata_dc_validation_schema'] = schema
+    publishv2(**publish_input)
+
+
+def test_datacite_override(publish_input):
+    extra_input = {
+        'metadata': {
+            'dc': {
+                'creators': [{'name': 'nick'}]
+            }
+        },
+        'metadata_dc_validation_schema': 'schema43'
+    }
+    publish_input.update(extra_input)
+    output = publishv2(**publish_input)['search']['content']['dc']
+    assert output['creators'] == [{'name': 'nick'}]
 
 
 def test_datacite_validator(publish_input):

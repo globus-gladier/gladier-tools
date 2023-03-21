@@ -242,7 +242,8 @@ class Publishv2(GladierBaseTool):
     :param source_collection: The source Globus Collection where data is stored 
     :param destination_collection: The destination Collection to transfer the ``dataset``
     :param index: The index to ingest this dataset in Globus Search
-    :param visible_to: A list of URN user or group identities for controlling access or ['public']
+    :param visible_to: (list[str] Default: ['public']) A list of URN user or group identities for controlling
+        access. 
     :param entry_id: (str Default:'metadata') The entry id to use in the Globus Search record
     :param metadata: (dict) Extra metadata to include in this search record
     :param source_collection_basepath: Share path if this is a Guest Collection, so that the proper
@@ -251,7 +252,7 @@ class Publishv2(GladierBaseTool):
         provided hostname
     :param checksum_algorithms: (tuple Default:('sha256', 'sha512')) Checksums to use for file metadata
     :param metadata_dc_validation_schema: (str) Schema used to validate datacite (dc) metadata. Possible values
-        are (schema31, schema40, schema41, schema42, schema43). Recommended schema43. Requires datacite
+        are (schema40, schema41, schema42, schema43). Recommended schema43. Requires datacite
         package installed on funcx endpoint.
     :param enable_publish: (bool Default: True) Enable the ingest step on the flow. If false, ingest will be
         skipped.
@@ -259,6 +260,7 @@ class Publishv2(GladierBaseTool):
         to the remote collection.
     :param enable_meta_dc: (bool Default: True) Generate datacite metadata during the 'gathering' funcx function step.
         datacite metadata is stored under the 'dc' key, and can be valiated using metadata_dc_validation_schema=schema43.
+        If additional fields are provided via the ``metadata`` parameter, it will override overlapping fields.
     :param enable_meta_files: (bool Default: True) Generate metadata on all files contained within the dataset. Files
         conforms to BDBag Remote File Manifests, generating a list of entries for each file with keys:
         ('url', 'sha256', 'sha512', 'filename', 'length'). Files may also contain extended keys ('mime_type', 'https_url')
