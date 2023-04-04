@@ -1,4 +1,9 @@
+# Required for publish v1
 globus-pilot>=0.6.2
+# Required for publish v2
+datacite
+puremagic
+
 pytest
 pytest-cov
 flake8
