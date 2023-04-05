@@ -2,7 +2,7 @@ from gladier import GladierBaseTool
 from typing import Tuple, List, Mapping
 
 
-def publishv2(
+def publishv2_gather_metadata(
     dataset: str,
     destination: str,
     source_collection: str,
@@ -306,9 +306,9 @@ class Publishv2(GladierBaseTool):
 
     flow_definition = {
         "Comment": "Publish metadata to Globus Search, with data from the result.",
-        "StartAt": "PublishGatherMetadata",
+        "StartAt": "Publishv2GatherMetadata",
         "States": {
-            "PublishGatherMetadata": {
+            "Publishv2GatherMetadata": {
                 "Comment": "Generate search metadata and a transfer document",
                 "Type": "Action",
                 "ActionUrl": "https://automate.funcx.org",
@@ -319,16 +319,16 @@ class Publishv2(GladierBaseTool):
                     "tasks": [
                         {
                             "endpoint.$": "$.input.funcx_endpoint_non_compute",
-                            "function.$": "$.input.publishv2_funcx_id",
+                            "function.$": "$.input.publishv2_gather_metadata_funcx_id",
                             "payload.$": "$.input.publishv2",
                         }
                     ]
                 },
-                "ResultPath": "$.PublishGatherMetadata",
+                "ResultPath": "$.Publishv2GatherMetadata",
                 "WaitTime": 600,
-                "Next": "ChoicePublishTransfer",
+                "Next": "Publishv2ChoiceTransfer",
             },
-            "ChoicePublishTransfer": {
+            "Publishv2ChoiceTransfer": {
                 "Comment": "Determine if the document should be cataloged in Globus Search",
                 "Type": "Choice",
                 "Choices": [
@@ -343,26 +343,26 @@ class Publishv2(GladierBaseTool):
                                 "BooleanEquals": True,
                             },
                         ],
-                        "Next": "PublishTransfer",
+                        "Next": "Publishv2Transfer",
                     }
                 ],
-                "Default": "PublishSkipTransfer",
+                "Default": "Publishv2SkipTransfer",
             },
-            "PublishTransfer": {
+            "Publishv2Transfer": {
                 "Comment": "Transfer files for publication",
                 "Type": "Action",
                 "ActionUrl": "https://actions.automate.globus.org/transfer/transfer",
                 "InputPath": "$.PublishGatherMetadata.details.result[0].transfer",
                 "ResultPath": "$.PublishTransfer",
                 "WaitTime": 600,
-                "Next": "ChoicePublishIngest",
+                "Next": "Publishv2ChoiceIngest",
             },
-            "PublishSkipTransfer": {
+            "Publishv2SkipTransfer": {
                 "Comment": "The ingest step has been skipped",
                 "Type": "Pass",
-                "Next": "ChoicePublishIngest",
+                "Next": "Publishv2ChoiceIngest",
             },
-            "ChoicePublishIngest": {
+            "Publishv2ChoiceIngest": {
                 "Comment": "Determine if the document should be cataloged in Globus Search",
                 "Type": "Choice",
                 "Choices": [
@@ -377,26 +377,26 @@ class Publishv2(GladierBaseTool):
                                 "BooleanEquals": True,
                             },
                         ],
-                        "Next": "PublishIngest",
+                        "Next": "Publishv2Ingest",
                     }
                 ],
-                "Default": "PublishSkipIngest",
+                "Default": "Publishv2SkipIngest",
             },
-            "PublishIngest": {
+            "Publishv2Ingest": {
                 "Comment": "Ingest the search document",
                 "Type": "Action",
                 "ActionUrl": "https://actions.globus.org/search/ingest",
                 "InputPath": "$.PublishGatherMetadata.details.result[0].search",
                 "ResultPath": "$.PublishIngest",
                 "WaitTime": 300,
-                "Next": "PublishDone",
+                "Next": "Publishv2Done",
             },
-            "PublishSkipIngest": {
+            "Publishv2SkipIngest": {
                 "Comment": "The ingest step has been skipped",
                 "Type": "Pass",
-                "Next": "PublishDone",
+                "Next": "Publishv2Done",
             },
-            "PublishDone": {
+            "Publishv2Done": {
                 "Comment": "The Publication tool has completed successfully.",
                 "Type": "Pass",
                 "End": True,
@@ -412,5 +412,5 @@ class Publishv2(GladierBaseTool):
     flow_input = {}
 
     funcx_functions = [
-        publishv2,
+        publishv2_gather_metadata,
     ]
