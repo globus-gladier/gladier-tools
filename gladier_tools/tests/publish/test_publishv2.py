@@ -157,20 +157,21 @@ def test_datacite_validator(publish_input):
 def test_publish_files(publish_input):
     output = publishv2_gather_metadata(**publish_input)
     files = output["search"]["content"]["files"]
+    files.sort(key=lambda x: x["filename"])
     assert files == [
-        {
-            "sha256": "ef04ad1ddb694bcf461bef6668d387117c63d1648589d55413d4266dc0372dbd",
-            "sha512": "aa650e6a730cc73c6d967d9a5c3549dd1bdc94a0128c1ea1fcb9506b5e9c099583e979892af75e2930fb33a84c0c7eb2be5e3e508809f4269cba01ff22847a03",
-            "filename": "foo.txt",
-            "url": "globus://my_globus_collection/my-new-project/test_dataset_folder/foo.txt",
-            "mime_type": "text/plain",
-            "length": 16,
-        },
         {
             "sha256": "49606feb430b0ca35c4099c1e84fe81b5634039ecbeb408d76fa5e44f93c1d9a",
             "sha512": "3a9db7ddff3f83902624832a74ba5559e83ef66cb471d14d79a2b89fa981f47b9a0f27ef83f4f266ee5ecf22f817fe58da6f4323c0eb5557fea9152fb4465e04",
             "filename": "bar.txt",
             "url": "globus://my_globus_collection/my-new-project/test_dataset_folder/bar.txt",
+            "mime_type": "text/plain",
+            "length": 16,
+        },
+        {
+            "sha256": "ef04ad1ddb694bcf461bef6668d387117c63d1648589d55413d4266dc0372dbd",
+            "sha512": "aa650e6a730cc73c6d967d9a5c3549dd1bdc94a0128c1ea1fcb9506b5e9c099583e979892af75e2930fb33a84c0c7eb2be5e3e508809f4269cba01ff22847a03",
+            "filename": "foo.txt",
+            "url": "globus://my_globus_collection/my-new-project/test_dataset_folder/foo.txt",
             "mime_type": "text/plain",
             "length": 16,
         },
