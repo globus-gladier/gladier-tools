@@ -247,13 +247,13 @@ class Publishv2(GladierBaseTool):
 
     FuncX Functions:
 
-    Publishv2 uses one function called "publishv2". For using custom generated metadata from another
-    function, it can be handy to generate the entire 'publishv2' input block and pass it as flow input
+    Publishv2 uses one function called "publishv2_gather_metadata". For using custom generated metadata from another
+    function, it can be handy to generate the entire 'publishv2_gather_metadata' input block and pass it as flow input
     instead, which can be done via the following:
 
     .. code-block::
         @generate_flow_definition(modifiers={
-            'publishv2': {'payload': '$.MyCustomPayload.details.result[0]'},
+            'publishv2_gather_metadata': {'payload': '$.MyCustomPayload.details.result[0]'},
         })
 
     This tool nests input under the 'publishv2' keyword. An example is below:
@@ -352,8 +352,8 @@ class Publishv2(GladierBaseTool):
                 "Comment": "Transfer files for publication",
                 "Type": "Action",
                 "ActionUrl": "https://actions.automate.globus.org/transfer/transfer",
-                "InputPath": "$.PublishGatherMetadata.details.result[0].transfer",
-                "ResultPath": "$.PublishTransfer",
+                "InputPath": "$.Publishv2GatherMetadata.details.result[0].transfer",
+                "ResultPath": "$.Publishv2Transfer",
                 "WaitTime": 600,
                 "Next": "Publishv2ChoiceIngest",
             },
@@ -386,8 +386,8 @@ class Publishv2(GladierBaseTool):
                 "Comment": "Ingest the search document",
                 "Type": "Action",
                 "ActionUrl": "https://actions.globus.org/search/ingest",
-                "InputPath": "$.PublishGatherMetadata.details.result[0].search",
-                "ResultPath": "$.PublishIngest",
+                "InputPath": "$.Publishv2GatherMetadata.details.result[0].search",
+                "ResultPath": "$.Publishv2Ingest",
                 "WaitTime": 300,
                 "Next": "Publishv2Done",
             },
