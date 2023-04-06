@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/globus-gladier/gladier_tools/compare/v0.4.2...v0.4.3) (2023-04-06)
+
+### Features
+
+* Added new Publishv2 Gladier Tool to replace the old globus-pilot based tool
+
+
 ### [0.4.2](https://github.com/globus-gladier/gladier_tools/compare/v0.4.1...v0.4.2) (2023-03-06)
 
 
