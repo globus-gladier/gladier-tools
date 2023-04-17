@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import typing as t
+
 from .base import (
-    JSONValue, JSONObject, JSONList,
     GladierExperimentalBaseActionTool,
     GladierExperimentalBaseTool,
+    JSONList,
+    JSONObject,
+    JSONValue,
     get_action_param_name,
 )
 
@@ -16,6 +20,6 @@ _nameables = (
     )
     if hasattr(x, "__name__")
 )
-_unnameables: list[str] = ["JSONObject", "JSONList", "JSONValue"]
+_unnameables: t.List[str] = ["JSONObject", "JSONList", "JSONValue"]
 
 __all__ = tuple(_nameables) + tuple(_unnameables)

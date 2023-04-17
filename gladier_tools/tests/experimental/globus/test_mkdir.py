@@ -17,4 +17,4 @@ def test_mkdir_tool():
     test_client = TestGladierClient()
 
     fd = test_client.get_flow_definition()
-    print(f"{fd=}")
+    assert "testMkDirState" in fd["States"]

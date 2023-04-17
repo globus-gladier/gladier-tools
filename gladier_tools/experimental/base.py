@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+import typing as t
 from abc import ABC, abstractmethod
 
 from gladier import GladierBaseTool
 from typing_extensions import TypeAlias
 
-JSONObject: TypeAlias = dict[str, "JSONValue"]
-JSONList: TypeAlias = list["JSONValue"]
-JSONValue: TypeAlias = JSONObject | JSONList | str | int | float | bool | None
+JSONObject: TypeAlias = t.Dict[str, "JSONValue"]
+JSONList: TypeAlias = t.List["JSONValue"]
+JSONValue: TypeAlias = t.Union[JSONObject, JSONList, str, int, float, bool, None]
 
 
 def get_action_param_name(param_name: str, param_val: str | int | bool | dict) -> str:
