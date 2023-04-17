@@ -116,9 +116,7 @@ class Publish(GladierBaseTool):
             'PublishGatherMetadata': {
                 'Comment': 'Say something to start the conversation',
                 'Type': 'Action',
-                'ActionUrl': 'https://automate.funcx.org',
-                'ActionScope': 'https://auth.globus.org/scopes/'
-                               'b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
+                'ActionUrl': 'https://compute2.dev.funcx.org/fxap',
                 'ExceptionOnActionFailure': False,
                 'Parameters': {
                     'tasks': [{
