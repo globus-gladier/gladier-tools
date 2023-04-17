@@ -5,7 +5,9 @@ from abc import ABC, abstractmethod
 from gladier import GladierBaseTool
 from typing_extensions import TypeAlias
 
-JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+JSONObject: TypeAlias = dict[str, "JSONValue"]
+JSONList: TypeAlias = list["JSONValue"]
+JSONValue: TypeAlias = JSONObject | JSONList | str | int | float | bool | None
 
 
 def get_action_param_name(param_name: str, param_val: str | int | bool | dict) -> str:
@@ -26,13 +28,12 @@ class GladierExperimentalBaseTool(GladierBaseTool, ABC):
             state_comment = f"State named {state_name}"
         self.state_comment = state_comment
         super().__init__(**kwargs)
-        self.set_flow_definition()
 
     @abstractmethod
-    def set_flow_definition(self) -> dict[str, JSON]:
+    def set_flow_definition(self) -> JSONObject:
         if self.flow_definition is not None:
             return self.flow_definition
-        self.flow_definition: dict[str, JSON] = {
+        self.flow_definition: JSONObject = {
             "Comment": self.state_comment,
             "StartAt": self.state_name,
             "States": {
@@ -43,10 +44,13 @@ class GladierExperimentalBaseTool(GladierBaseTool, ABC):
         }
         return self.flow_definition
 
-    def get_dict_for_flow_state(self) -> dict[str, JSON]:
-        return GladierExperimentalBaseTool.set_flow_definition(self)["States"][
-            self.state_name
-        ]
+    def get_dict_for_flow_state(self) -> JSONObject:
+        flow_def = GladierExperimentalBaseTool.set_flow_definition(self)
+        flow_states: JSONObject = flow_def.get("States", {})
+        return flow_states[self.state_name]
+
+    def get_flow_definition(self) -> JSONObject:
+        return self.set_flow_definition()
 
     @property
     def required_input(self) -> list[str]:
@@ -81,16 +85,24 @@ class GladierExperimentalBaseActionTool(GladierExperimentalBaseTool, ABC):
         if not result_path.startswith("$."):
             result_path = "$." + result_path
         self.result_path = result_path
-        GladierExperimentalBaseActionTool.set_flow_definition(self)
+        self.parameters: JSONObject | None = None
+        self.input_path: str | None = None
 
-    @abstractmethod
-    def set_flow_definition(self) -> dict[str, JSON]:
+    def set_flow_definition(self) -> JSONObject:
         flow_state = self.get_dict_for_flow_state()
-        flow_state["Type"] = "Action"
-        flow_state["ActionUrl"] = self.action_url
-        flow_state["ResultPath"] = self.result_path
-        flow_state["WaitTime"] = self.wait_time
-        flow_state["End"] = True
+        flow_state.update(
+            {
+                "Type": "Action",
+                "ActionUrl": self.action_url,
+                "ResultPath": self.result_path,
+                "WaitTime": self.wait_time,
+                "End": True,
+            }
+        )
         if self.action_scope is not None:
             flow_state["ActionScope"] = self.action_scope
+        if self.required_input is not None:
+            flow_state["InputPath"] = self.input_path
+        if self.parameters is not None:
+            flow_state["Parameters"] = self.parameters
         return self.flow_definition

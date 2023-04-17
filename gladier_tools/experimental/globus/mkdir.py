@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from gladier_tools.experimental import (
-    JSON,
     GladierExperimentalBaseActionTool,
     get_action_param_name,
 )
@@ -28,8 +27,6 @@ class GlobusMkDir(GladierExperimentalBaseActionTool):
         path="$.input.mkdir_path",
         **kwargs,
     ):
-        self.endpoint_id = endpoint_id
-        self.path = path
         super().__init__(
             state_name=state_name,
             action_url="https://actions.globus.org/transfer/mkdir",
@@ -37,11 +34,9 @@ class GlobusMkDir(GladierExperimentalBaseActionTool):
             wait_time=wait_time,
             **kwargs,
         )
-
-    def set_flow_definition(self) -> dict[str, JSON]:
-        flow_state = self.get_dict_for_flow_state()
-        flow_state["Parameters"] = {
-            get_action_param_name("endpoint_id", self.endpoint_id): self.endpoint_id,
-            get_action_param_name("path", self.path): self.path,
+        self.parameters = {
+            get_action_param_name("endpoint_id", endpoint_id): endpoint_id,
+            get_action_param_name("path", path): path,
         }
-        return self.flow_definition
+        self.endpoint_id = endpoint_id
+        self.path = path
