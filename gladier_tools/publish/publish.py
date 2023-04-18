@@ -116,9 +116,7 @@ class Publish(GladierBaseTool):
             'PublishGatherMetadata': {
                 'Comment': 'Say something to start the conversation',
                 'Type': 'Action',
-                'ActionUrl': 'https://automate.funcx.org',
-                'ActionScope': 'https://auth.globus.org/scopes/'
-                               'b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all',
+                'ActionUrl': 'https://compute2.dev.funcx.org/fxap',
                 'ExceptionOnActionFailure': False,
                 'Parameters': {
                     'tasks': [{
@@ -135,7 +133,7 @@ class Publish(GladierBaseTool):
                 'Comment': 'Transfer files for publication',
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.automate.globus.org/transfer/transfer',
-                'InputPath': '$.PublishGatherMetadata.details.result[0].transfer',
+                'InputPath': '$.PublishGatherMetadata.details.result[0].output.transfer',
                 'ResultPath': '$.PublishTransfer',
                 'WaitTime': 600,
                 'Next': 'PublishIngest',
@@ -145,7 +143,7 @@ class Publish(GladierBaseTool):
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.globus.org/search/ingest',
                 'ExceptionOnActionFailure': False,
-                'InputPath': '$.PublishGatherMetadata.details.result[0].search',
+                'InputPath': '$.PublishGatherMetadata.details.result[0].output.search',
                 'ResultPath': '$.PublishIngest',
                 'WaitTime': 300,
                 'End': True

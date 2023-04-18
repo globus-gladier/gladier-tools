@@ -315,9 +315,7 @@ class Publishv2(GladierBaseTool):
             "Publishv2GatherMetadata": {
                 "Comment": "Generate search metadata and a transfer document",
                 "Type": "Action",
-                "ActionUrl": "https://automate.funcx.org",
-                "ActionScope": "https://auth.globus.org/scopes/"
-                "b3db7e59-a6f1-4947-95c2-59d6b7a70f8c/action_all",
+                "ActionUrl": "https://compute2.dev.funcx.org/fxap",
                 "ExceptionOnActionFailure": True,
                 "Parameters": {
                     "tasks": [
@@ -356,7 +354,7 @@ class Publishv2(GladierBaseTool):
                 "Comment": "Transfer files for publication",
                 "Type": "Action",
                 "ActionUrl": "https://actions.automate.globus.org/transfer/transfer",
-                "InputPath": "$.Publishv2GatherMetadata.details.result[0].transfer",
+                "InputPath": "$.Publishv2GatherMetadata.details.results[0].output.transfer",
                 "ResultPath": "$.Publishv2Transfer",
                 "WaitTime": 600,
                 "Next": "Publishv2ChoiceIngest",
@@ -390,7 +388,7 @@ class Publishv2(GladierBaseTool):
                 "Comment": "Ingest the search document",
                 "Type": "Action",
                 "ActionUrl": "https://actions.globus.org/search/ingest",
-                "InputPath": "$.Publishv2GatherMetadata.details.result[0].search",
+                "InputPath": "$.Publishv2GatherMetadata.details.results[0].output.search",
                 "ResultPath": "$.Publishv2Ingest",
                 "WaitTime": 300,
                 "Next": "Publishv2Done",
