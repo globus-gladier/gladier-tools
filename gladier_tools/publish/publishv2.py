@@ -240,20 +240,24 @@ class Publishv2(GladierBaseTool):
     metadata is automatically gathered.
 
     Dependencies:
-        None!
+
+    * None!
+
     Optional Dependencies:
+
     * puremagic -- Better mimetype detection
     * datacite -- Validation of Datacite (dc) metadata
 
     FuncX Functions:
 
-    Publishv2 uses one function called "publishv2_gather_metadata". For using custom generated metadata from another
+    Publishv2 uses one function called 'publishv2_gather_metadata'. For using custom generated metadata from another
     function, it can be handy to generate the entire 'publishv2_gather_metadata' input block and pass it as flow input
     instead, which can be done via the following:
 
     .. code-block::
+
         @generate_flow_definition(modifiers={
-            'publishv2_gather_metadata': {'payload': '$.MyCustomPayload.details.result[0]'},
+            'publishv2_gather_metadata': {'payload': '$.MyCustomPayload.details.results[0].output'},
         })
 
     This tool nests input under the 'publishv2' keyword. An example is below:
