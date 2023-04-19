@@ -133,7 +133,7 @@ class Publish(GladierBaseTool):
                 'Comment': 'Transfer files for publication',
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.automate.globus.org/transfer/transfer',
-                'InputPath': '$.PublishGatherMetadata.details.result[0].output.transfer',
+                'InputPath': '$.PublishGatherMetadata.details.results[0].output.transfer',
                 'ResultPath': '$.PublishTransfer',
                 'WaitTime': 600,
                 'Next': 'PublishIngest',
@@ -143,7 +143,7 @@ class Publish(GladierBaseTool):
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.globus.org/search/ingest',
                 'ExceptionOnActionFailure': False,
-                'InputPath': '$.PublishGatherMetadata.details.result[0].output.search',
+                'InputPath': '$.PublishGatherMetadata.details.results[0].output.search',
                 'ResultPath': '$.PublishIngest',
                 'WaitTime': 300,
                 'End': True
