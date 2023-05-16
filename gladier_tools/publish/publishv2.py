@@ -295,9 +295,9 @@ class Publishv2(GladierBaseTool):
     :param metadata_dc_validation_schema: (str) Schema used to validate datacite (dc) metadata. Possible values
         are (schema40, schema41, schema42, schema43). Recommended schema43. Requires datacite
         package installed on funcx endpoint.
-    :param enable_publish: (bool Default: False) Enable the ingest step on the flow. If false, ingest will be
+    :param enable_publish: (bool Default: True) Enable the ingest step on the flow. If false, ingest will be
         skipped.
-    :param enable_transfer: (bool Default: False) Enable Transfer on the flow. If False, data will not be transferred
+    :param enable_transfer: (bool Default: True) Enable Transfer on the flow. If False, data will not be transferred
         to the remote collection.
     :param enable_meta_dc: (bool Default: True) Generate datacite metadata during the 'gathering' funcx function step.
         datacite metadata is stored under the 'dc' key, and can be valiated using metadata_dc_validation_schema=schema43.
