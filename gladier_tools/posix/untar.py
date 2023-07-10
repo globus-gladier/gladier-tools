@@ -51,8 +51,8 @@ class UnTar(GladierBaseTool):
     :raises FileNotFoundError: If the file does not exist.
     """
 
-    funcx_functions = [untar]
+    compute_functions = [untar]
     required_input = [
             'untar_input',
-            'funcx_endpoint_compute',
+            'compute_endpoint',
         ]

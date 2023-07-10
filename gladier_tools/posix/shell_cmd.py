@@ -131,5 +131,5 @@ class ShellCmdTool(GladierBaseTool):
         A tuple containing the return code of the command execution, the string
         of the standard out and standard error (if capture_output is True)
     """
-    funcx_functions = [shell_cmd]
-    required_input = ["args", "funcx_endpoint_compute"]
+    compute_functions = [shell_cmd]
+    required_input = ["args", "compute_endpoint"]

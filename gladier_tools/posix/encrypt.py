@@ -54,9 +54,9 @@ class Encrypt(GladierBaseTool):
     :returns output_path: Location of the encrypted file.
     """
 
-    funcx_functions = [encrypt]
+    compute_functions = [encrypt]
     required_input = [
         'encrypt_input',
         'encrypt_key',
-        'funcx_endpoint_compute'
+        'compute_endpoint'
     ]
