@@ -1,6 +1,8 @@
 import pytest
 from gladier import GladierBaseClient, generate_flow_definition
 
+from .mocks import MOCK_LOGIN_MANAGER
+
 GLADIER_TOOLS = [
     # Posix
     'gladier_tools.posix.Tar',
@@ -26,4 +28,4 @@ def test_use_gladier_tool(import_string):
     class MyGladierClass(GladierBaseClient):
         gladier_tools = [import_string]
 
-    MyGladierClass(auto_login=False)
+    MyGladierClass(login_manager=MOCK_LOGIN_MANAGER)
