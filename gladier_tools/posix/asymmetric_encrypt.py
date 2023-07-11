@@ -58,11 +58,11 @@ class AsymmetricEncrypt(GladierBaseTool):
     :returns output_path: Location of the encrypted file.
     """
 
-    funcx_functions = [asymmetric_encrypt]
+    compute_functions = [asymmetric_encrypt]
     required_input = [
         'public_key_path',
         'asym_encrypt_file',
-        'funcx_endpoint_compute'
+        'compute_endpoint'
     ]
     flow_input = {
         'public_key_path': '~/.ssh/id_rsa.pub'

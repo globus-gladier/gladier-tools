@@ -60,9 +60,9 @@ class Decrypt(GladierBaseTool):
     :returns output_path: Location of the decrypted file.
     """
 
-    funcx_functions = [decrypt]
+    compute_functions = [decrypt]
     required_input = [
         'decrypt_input',
         'decrypt_key',
-        'funcx_endpoint_compute'
+        'compute_endpoint'
     ]

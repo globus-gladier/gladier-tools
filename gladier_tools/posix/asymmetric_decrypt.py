@@ -70,11 +70,11 @@ class AsymmetricDecrypt(GladierBaseTool):
     :returns output_path: Location of the decrypted file.
     """
 
-    funcx_functions = [asymmetric_decrypt]
+    compute_functions = [asymmetric_decrypt]
     required_input = [
         'private_key_path',
         'asym_decrypt_file',
-        'funcx_endpoint_compute'
+        'compute_endpoint'
     ]
 
     flow_input = {

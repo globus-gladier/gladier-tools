@@ -39,7 +39,7 @@ def https_download_file(**data):
 @generate_flow_definition
 class HttpsDownloadFile(GladierBaseTool):
 
-    funcx_functions = [https_download_file]
+    compute_functions = [https_download_file]
     flow_input = {
         'headers':'',
         }
@@ -48,5 +48,5 @@ class HttpsDownloadFile(GladierBaseTool):
         'file_name',
         'file_path',
         'headers',
-        'funcx_endpoint_non_compute'
+        'compute_endpoint'
         ]

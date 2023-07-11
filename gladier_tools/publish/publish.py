@@ -116,12 +116,12 @@ class Publish(GladierBaseTool):
             'PublishGatherMetadata': {
                 'Comment': 'Say something to start the conversation',
                 'Type': 'Action',
-                'ActionUrl': 'https://compute2.dev.funcx.org/fxap',
+                'ActionUrl': 'https://compute.actions.globus.org',
                 'ExceptionOnActionFailure': False,
                 'Parameters': {
                     'tasks': [{
-                        'endpoint.$': '$.input.funcx_endpoint_non_compute',
-                        'function.$': '$.input.publish_gather_metadata_funcx_id',
+                        'endpoint.$': '$.input.compute_endpoint',
+                        'function.$': '$.input.publish_gather_metadata_function_id',
                         'payload.$': '$.input.pilot',
                     }]
                 },
@@ -153,13 +153,13 @@ class Publish(GladierBaseTool):
 
     required_input = [
         'pilot',
-        'funcx_endpoint_non_compute',
+        'compute_endpoint',
     ]
 
     flow_input = {
 
     }
 
-    funcx_functions = [
+    compute_functions = [
         publish_gather_metadata,
     ]

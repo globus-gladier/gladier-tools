@@ -35,8 +35,8 @@ class Tar(GladierBaseTool):
     :returns path: The name of the newly created archive.
     """
 
-    funcx_functions = [tar]
+    compute_functions = [tar]
     required_input = [
         'tar_input',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]

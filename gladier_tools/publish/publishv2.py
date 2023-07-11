@@ -315,13 +315,13 @@ class Publishv2(GladierBaseTool):
             "Publishv2GatherMetadata": {
                 "Comment": "Generate search metadata and a transfer document",
                 "Type": "Action",
-                "ActionUrl": "https://compute2.dev.funcx.org/fxap",
+                "ActionUrl": "https://compute.actions.globus.org",
                 "ExceptionOnActionFailure": True,
                 "Parameters": {
                     "tasks": [
                         {
-                            "endpoint.$": "$.input.funcx_endpoint_non_compute",
-                            "function.$": "$.input.publishv2_gather_metadata_funcx_id",
+                            "endpoint.$": "$.input.compute_endpoint",
+                            "function.$": "$.input.publishv2_gather_metadata_function_id",
                             "payload.$": "$.input.publishv2",
                         }
                     ]
@@ -408,11 +408,11 @@ class Publishv2(GladierBaseTool):
 
     required_input = [
         "publishv2",
-        "funcx_endpoint_non_compute",
+        "compute_endpoint",
     ]
 
     flow_input = {}
 
-    funcx_functions = [
+    compute_functions = [
         publishv2_gather_metadata,
     ]
