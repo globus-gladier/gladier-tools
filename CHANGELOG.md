@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0b1](https://github.com/globus-gladier/gladier_tools/compare/v0.4.4...v0.5.0b1) (2023-07-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* RequireGladier v0.9.0+ ([e171da3](https://github.com/globus-gladier/gladier_tools/commit/e171da3a36d72c544f33586d9f8ea21eb1a6822d))
+
+
+### Features
+
+* Upgrade tooling for Gladier v0.9.0 ([c359177](https://github.com/globus-gladier/gladier_tools/commit/c35917775816febc93a37a5a99a6d74c7f6d820b))
+
+This change upgrades the tools to replace FuncX with Globus Compute as part of Gladier v0.9.0. This also
+changes the naming convention of using "funcx_endpoint_compute" and "funcx_endpoint_non_compute". Both have
+been changed to "compute_endpoint", and will be used on all future tools.
+
 
 ### [0.4.4](https://github.com/globus-gladier/gladier_tools/compare/v0.4.3...v0.4.4) (2023-04-19)
 
