@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/globus-gladier/gladier_tools/compare/v0.4.4...v0.5.0) (2023-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update Gladier Tools to require Gladier v0.9.0+
+* Upgrade tooling for Gladier v0.9.0
+
+* Update Gladier Tools to require Gladier v0.9.0+ ([e171da3](https://github.com/globus-gladier/gladier_tools/commit/e171da3a36d72c544f33586d9f8ea21eb1a6822d))
+* Upgrade tooling for Gladier v0.9.0 ([c359177](https://github.com/globus-gladier/gladier_tools/commit/c35917775816febc93a37a5a99a6d74c7f6d820b))
+
 ## [0.5.0b1](https://github.com/globus-gladier/gladier_tools/compare/v0.4.4...v0.5.0b1) (2023-07-11)
 
 
