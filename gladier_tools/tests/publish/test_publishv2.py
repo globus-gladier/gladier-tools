@@ -1,4 +1,5 @@
 import pytest
+from unittest import mock
 import pathlib
 import json
 from datacite import schema42, schema43
@@ -78,6 +79,27 @@ def test_publish_dc(publish_input):
     assert "dates" in content["dc"]
     assert content["dc"]["dates"][0]["dateType"] == "Created"
     assert "date" in content["dc"]["dates"][0]
+
+
+def test_metadata_file(publish_input):
+    publish_input["metadata_file"] = mock_data / "metadata_file.json"
+    output = publishv2_gather_metadata(**publish_input)
+    content = output["search"]["content"]
+    assert content["foo"] == "bar"
+
+
+def test_metadata_file_precedence(publish_input):
+    publish_input["metadata_file"] = mock_data / "metadata_file.json"
+    publish_input["metadata"] = {"foo": "car"}
+    output = publishv2_gather_metadata(**publish_input)
+    content = output["search"]["content"]
+    assert content["foo"] == "car"
+
+
+def test_bad_metadata_file(publish_input):
+    publish_input["metadata_file"] = mock_data / "random.data"
+    with pytest.raises(ValueError):
+        publishv2_gather_metadata(**publish_input)
 
 
 def test_validate_dc(publish_input):

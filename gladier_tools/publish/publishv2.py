@@ -11,6 +11,7 @@ def publishv2_gather_metadata(
     visible_to: List[str],
     entry_id: str = "metadata",
     metadata: Mapping = None,
+    metadata_file: str = None,
     source_collection_basepath: str = None,
     destination_url_hostname: str = None,
     checksum_algorithms: Tuple[str] = ("sha256", "sha512"),
@@ -21,6 +22,7 @@ def publishv2_gather_metadata(
     enable_meta_files: bool = True,
     **data,
 ):
+    import json
     import hashlib
     import urllib
     import pathlib
@@ -174,6 +176,15 @@ def publishv2_gather_metadata(
             "schemaVersion": "http://datacite.org/schema/kernel-4",
         }
 
+    def get_metadata_file(meta_file):
+        if meta_file is None:
+            return {}
+        try:
+            with open(meta_file) as f:
+                return json.load(f)
+        except Exception:
+            raise ValueError(f"Failed to load metadata_file '{meta_file}'.")
+
     def get_content(title, subject, metadata):
         new_metadata = {}
         if enable_meta_files:
@@ -184,6 +195,7 @@ def publishv2_gather_metadata(
             new_metadata["dc"] = get_dc(title, subject, new_metadata.get("files", []))
             if metadata and "dc" in metadata:
                 new_metadata["dc"].update(metadata.pop("dc"))
+        new_metadata.update(get_metadata_file(metadata_file))
         new_metadata.update(metadata if metadata is not None else {})
         if metadata_dc_validation_schema:
             import datacite
@@ -287,6 +299,9 @@ class Publishv2(GladierBaseTool):
         access.
     :param entry_id: (str Default:'metadata') The entry id to use in the Globus Search record
     :param metadata: (dict) Extra metadata to include in this search record
+    :param metadata_file: (str) An optional JSON metadata file to use for metadata. Will overwrite any existing
+        "dc" or "files" generated content. Will be overridden by any values provided in "metadata". Raises a
+        ValueError if it was unable to load a JSON file.
     :param source_collection_basepath: Share path if this is a Guest Collection, so that the proper
         source path can be constructed for the transfer document
     :param destination_url_hostname: Adds "https_url" to each file in the 'files' document using this
