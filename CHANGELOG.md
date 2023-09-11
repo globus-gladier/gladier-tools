@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/globus-gladier/gladier_tools/compare/v0.5.0...v0.5.1) (2023-09-11)
+
+
+### Features
+
+* Add 'metadata_file' option to publishv2 ([#84](https://github.com/globus-gladier/gladier_tools/issues/84)) ([09fea35](https://github.com/globus-gladier/gladier_tools/commit/09fea35250bbdbc1631517c656fc0588f29fea61))
+
 ## [0.5.0](https://github.com/globus-gladier/gladier_tools/compare/v0.4.4...v0.5.0) (2023-08-22)
 
 
