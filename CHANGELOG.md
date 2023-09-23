@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.2](https://github.com/globus-gladier/gladier_tools/compare/v0.5.1...v0.5.2) (2023-09-23)
+
+
+### Bug Fixes
+
+* Add recursive option to publish v2 ([7f40f4e](https://github.com/globus-gladier/gladier_tools/commit/7f40f4e0d9d8e6b815a7482b80d9ce64ec4e3ba2))
+
 ### [0.5.1](https://github.com/globus-gladier/gladier_tools/compare/v0.5.0...v0.5.1) (2023-09-11)
 
 
