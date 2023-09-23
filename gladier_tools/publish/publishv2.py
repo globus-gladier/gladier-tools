@@ -14,6 +14,7 @@ def publishv2_gather_metadata(
     metadata_file: str = None,
     source_collection_basepath: str = None,
     destination_url_hostname: str = None,
+    recursive_transfer: bool = True,
     checksum_algorithms: Tuple[str] = ("sha256", "sha512"),
     metadata_dc_validation_schema: str = None,
     enable_publish: bool = True,
@@ -235,6 +236,7 @@ def publishv2_gather_metadata(
                         source_collection_basepath, dataset
                     ),
                     "destination_path": str(destination_path),
+                    "recursive": recursive_transfer,
                 }
             ],
         },

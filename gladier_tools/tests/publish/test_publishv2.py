@@ -259,6 +259,7 @@ def test_publish_transfer(publish_input):
             {
                 "destination_path": str(pathlib.Path("/my-new-project") / dataset.name),
                 "source_path": str(dataset),
+                "recursive": True,
             }
         ],
     }
