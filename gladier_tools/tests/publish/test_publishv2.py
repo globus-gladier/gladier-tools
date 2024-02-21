@@ -1,6 +1,7 @@
 import pytest
 from unittest import mock
 import pathlib
+import datetime
 import json
 from datacite import schema42, schema43
 from gladier_tools.publish.publishv2 import publishv2_gather_metadata
@@ -68,7 +69,7 @@ def test_publish_dc(publish_input):
         # '2023-03-17T17:14:31.832955Z'
         # 'dates': [{'date': '2023-03-16T07:44:14.044091', 'dateType': 'Created'}],
         "formats": ["text/plain"],
-        "publicationYear": "2023",
+        "publicationYear": str(datetime.datetime.now().year),
         "publisher": "",
         "types": {"resourceType": "Dataset", "resourceTypeGeneral": "Dataset"},
         "subjects": [],
