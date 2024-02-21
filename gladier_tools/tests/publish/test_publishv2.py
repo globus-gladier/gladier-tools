@@ -44,7 +44,12 @@ def publish_input():
 
 
 def test_publish(publish_input):
-    publishv2_gather_metadata(**publish_input).keys() == ("search", "transfer")
+    assert set(publishv2_gather_metadata(**publish_input)) == {"search", "transfer"}
+
+
+def test_publish(publish_input):
+    publish_input["dataset"] = mock_data / "nested_dataset_folder"
+    assert set(publishv2_gather_metadata(**publish_input)) == {"search", "transfer"}
 
 
 def test_json_serializable(publish_input):
