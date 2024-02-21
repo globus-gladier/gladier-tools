@@ -101,7 +101,7 @@ def publishv2_gather_metadata(
                 destination
                 / str(local_abspath.relative_to(dataset.parent)).lstrip("/"),
             )
-            for local_abspath in file_list
+            for local_abspath in file_list if not local_abspath.is_dir()
         ]
 
         manifest_entries = []
