@@ -94,14 +94,20 @@ def publishv2_gather_metadata(
         if not dataset.exists():
             raise ValueError(f"File does not exist: {filepath}")
 
-        file_list = [dataset] if dataset.is_file() else list(dataset.iterdir())
+        if dataset.is_file():
+            file_list = [dataset]
+        else:
+            # Glob together all directories, then iterate over them for all files
+            file_list = [dir.iterdir() for dir in dataset.glob("**")]
+            file_list = [f for subgroup in file_list for f in subgroup]
         file_list = [
             (
                 local_abspath,
                 destination
                 / str(local_abspath.relative_to(dataset.parent)).lstrip("/"),
             )
-            for local_abspath in file_list if not local_abspath.is_dir()
+            for local_abspath in file_list
+            if not local_abspath.is_dir()
         ]
 
         manifest_entries = []

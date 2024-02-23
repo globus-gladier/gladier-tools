@@ -47,9 +47,18 @@ def test_publish(publish_input):
     assert set(publishv2_gather_metadata(**publish_input)) == {"search", "transfer"}
 
 
-def test_publish(publish_input):
+def test_publish_nested_dataset(publish_input):
     publish_input["dataset"] = mock_data / "nested_dataset_folder"
-    assert set(publishv2_gather_metadata(**publish_input)) == {"search", "transfer"}
+    metadata = publishv2_gather_metadata(**publish_input)
+    assert set(metadata) == {"search", "transfer"}
+
+    files = metadata["search"]["content"]["files"]
+    assert len(files) == 2
+    urls = {f["url"] for f in files}
+    assert urls == {
+        "globus://my_globus_collection/my-new-project/nested_dataset_folder/bar.txt",
+        "globus://my_globus_collection/my-new-project/nested_dataset_folder/nested_folder/foo.txt",
+    }
 
 
 def test_json_serializable(publish_input):
@@ -275,7 +284,9 @@ def test_publish_collection_valid_basepath(publish_input):
     """Test Guest Collection basepath where the share point is the parent of the source
     dataset being published."""
     publish_input["source_collection_basepath"] = publish_input["dataset"].parent
-    source_file = publishv2_gather_metadata(**publish_input)["transfer"]["transfer_items"][0]
+    source_file = publishv2_gather_metadata(**publish_input)["transfer"][
+        "transfer_items"
+    ][0]
     assert source_file["source_path"] == f"/{publish_input['dataset'].name}"
 
 
