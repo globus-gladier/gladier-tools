@@ -286,8 +286,8 @@ class Publishv2(GladierBaseTool):
             'index': 'my-globus-search-index-uuid',
             'visible_to': ['public'],
             # Ingest and Transfer are disabled by default, allowing for 'dry-run' testing.
-            # 'ingest_enabled': True,
-            # 'transfer_enabled': True,
+            # 'enable_publish': True,
+            # 'enable_transfer': True,
         },
         'funcx_endpoint_non_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
 
@@ -354,11 +354,11 @@ class Publishv2(GladierBaseTool):
                     {
                         "And": [
                             {
-                                "Variable": "$.input.publishv2.transfer_enabled",
+                                "Variable": "$.input.publishv2.enable_transfer",
                                 "IsPresent": True,
                             },
                             {
-                                "Variable": "$.input.publishv2.transfer_enabled",
+                                "Variable": "$.input.publishv2.enable_transfer",
                                 "BooleanEquals": True,
                             },
                         ],
@@ -388,11 +388,11 @@ class Publishv2(GladierBaseTool):
                     {
                         "And": [
                             {
-                                "Variable": "$.input.publishv2.ingest_enabled",
+                                "Variable": "$.input.publishv2.enable_publish",
                                 "IsPresent": True,
                             },
                             {
-                                "Variable": "$.input.publishv2.ingest_enabled",
+                                "Variable": "$.input.publishv2.enable_publish",
                                 "BooleanEquals": True,
                             },
                         ],
