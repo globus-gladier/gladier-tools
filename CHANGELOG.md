@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.3](https://github.com/globus-gladier/gladier_tools/compare/v0.5.2...v0.5.3) (2024-04-15)
+
+
+### Bug Fixes
+
+* enable_transfer, enabled_publish not working properly ([abd9a72](https://github.com/globus-gladier/gladier_tools/commit/abd9a72cad0e4881d6ff492ddcc0d63ca19ea99d))
+* PubishV2 exception with computing checksums if dataset contained nested directories ([f16137f](https://github.com/globus-gladier/gladier_tools/commit/f16137fbab56ff60a0f16226f8436a5f76b8e329))
+* Publish v2 not properly picking up subdirectory files ([63d7661](https://github.com/globus-gladier/gladier_tools/commit/63d76617e9f9fbacc5d87bef574cc6d5759cd461))
+
+
 ### [0.5.2](https://github.com/globus-gladier/gladier_tools/compare/v0.5.1...v0.5.2) (2023-09-23)
 
 
