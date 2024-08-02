@@ -55,6 +55,10 @@ class Publish(GladierBaseTool):
     """This function uses the globus-pilot tool to generate metadata compatible with
     portals on https://acdc.alcf.anl.gov/. Requires globus_pilot>=0.6.0.
 
+    .. warning::
+        This tool is based on tooling that is no longer supported. Please move to publish v2
+        instead.
+
     FuncX Functions:
 
     * publish_gather_metadata (funcx_endpoint_non_compute)
