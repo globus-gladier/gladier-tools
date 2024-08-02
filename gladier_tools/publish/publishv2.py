@@ -268,7 +268,7 @@ class Publishv2(GladierBaseTool):
     * puremagic -- Better mimetype detection
     * datacite -- Validation of Datacite (dc) metadata
 
-    FuncX Functions:
+    Compute Functions:
 
     Publishv2 uses one function called 'publishv2_gather_metadata'. For using custom generated metadata from another
     function, it can be handy to generate the entire 'publishv2_gather_metadata' input block and pass it as flow input
@@ -295,7 +295,7 @@ class Publishv2(GladierBaseTool):
             # 'enable_publish': True,
             # 'enable_transfer': True,
         },
-        'funcx_endpoint_non_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+        'compute_endpoint': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
 
     :param dataset: Path to file or directory, which will be catalogued in Globus Search and transferred
         to the remote destination
@@ -317,18 +317,18 @@ class Publishv2(GladierBaseTool):
     :param checksum_algorithms: (tuple Default:('sha256', 'sha512')) Checksums to use for file metadata
     :param metadata_dc_validation_schema: (str) Schema used to validate datacite (dc) metadata. Possible values
         are (schema40, schema41, schema42, schema43). Recommended schema43. Requires datacite
-        package installed on funcx endpoint.
+        package installed on the compute endpoint.
     :param enable_publish: (bool Default: True) Enable the ingest step on the flow. If false, ingest will be
         skipped.
     :param enable_transfer: (bool Default: True) Enable Transfer on the flow. If False, data will not be transferred
         to the remote collection.
-    :param enable_meta_dc: (bool Default: True) Generate datacite metadata during the 'gathering' funcx function step.
+    :param enable_meta_dc: (bool Default: True) Generate datacite metadata during the 'gathering' compute function step.
         datacite metadata is stored under the 'dc' key, and can be valiated using metadata_dc_validation_schema=schema43.
         If additional fields are provided via the ``metadata`` parameter, it will override overlapping fields.
     :param enable_meta_files: (bool Default: True) Generate metadata on all files contained within the dataset. Files
         conforms to BDBag Remote File Manifests, generating a list of entries for each file with keys:
         ('url', 'sha256', 'sha512', 'filename', 'length'). Files may also contain extended keys ('mime_type', 'https_url')
-    :param funcx_endpoint_non_compute: A funcX endpoint uuid for gathering metadata.
+    :param compute_endpoint: A Globus Compute endpoint uuid for gathering metadata.
     """
 
     flow_definition = {
