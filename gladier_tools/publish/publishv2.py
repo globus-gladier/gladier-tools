@@ -290,7 +290,7 @@ class Publishv2(GladierBaseTool):
             'source_collection': 'my-source-globus-collection',
             'destination_collection': 'my-destination-globus-collection',
             'index': 'my-globus-search-index-uuid',
-            'visible_to': ['public'],
+            'visible_to': ['public', 'urn:globus:groups:id:my-group-uuid'],
             # Ingest and Transfer are disabled by default, allowing for 'dry-run' testing.
             # 'enable_publish': True,
             # 'enable_transfer': True,
@@ -304,7 +304,7 @@ class Publishv2(GladierBaseTool):
     :param destination_collection: The destination Collection to transfer the ``dataset``
     :param index: The index to ingest this dataset in Globus Search
     :param visible_to: (list[str] Default: ['public']) A list of URN user or group identities for controlling
-        access.
+        access (For instance 'urn:globus:groups:id:' for groups).
     :param entry_id: (str Default:'metadata') The entry id to use in the Globus Search record
     :param metadata: (dict) Extra metadata to include in this search record
     :param metadata_file: (str) An optional JSON metadata file to use for metadata. Will overwrite any existing
