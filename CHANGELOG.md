@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.4](https://github.com/globus-gladier/gladier_tools/compare/v0.5.3...v0.5.4) (2024-10-22)
+
+
+### Bug Fixes
+
+* Update old transfer AP ([c5721e6](https://github.com/globus-gladier/gladier_tools/commit/c5721e62e4ce732efc498b323083580060e50194))
+
+**NOTE** This update contains a fix for upgrading to the newer Transfer Action Provider. The old Transfer Action Provider will be removed Nov 13th, 2024. All users must upgrade.
+
+https://docs.globus.org/api/transfer/action-providers/migration/
+
 ### [0.5.3](https://github.com/globus-gladier/gladier_tools/compare/v0.5.2...v0.5.3) (2024-04-15)
 
 
