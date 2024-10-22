@@ -36,9 +36,9 @@ def publish_gather_metadata(**data):
                 'search_index': index
             },
             'transfer': {
-                'source_endpoint_id': data['source_globus_endpoint'],
-                'destination_endpoint_id': pc.get_endpoint(),
-                'transfer_items': [{
+                'source_endpoint': data['source_globus_endpoint'],
+                'destination_endpoint': pc.get_endpoint(),
+                'DATA': [{
                     'source_path': translate_guest_collection_path(source_collection_basepath, src),
                     'destination_path': dest,
                     # 'recursive': False,  # each file is explicit in pilot, no directories
@@ -136,7 +136,7 @@ class Publish(GladierBaseTool):
             'PublishTransfer': {
                 'Comment': 'Transfer files for publication',
                 'Type': 'Action',
-                'ActionUrl': 'https://actions.automate.globus.org/transfer/transfer',
+                'ActionUrl': 'https://transfer.actions.globus.org/transfer/',
                 'InputPath': '$.PublishGatherMetadata.details.results[0].output.transfer',
                 'ResultPath': '$.PublishTransfer',
                 'WaitTime': 600,

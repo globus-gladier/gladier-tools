@@ -31,11 +31,11 @@ class Transfer(GladierBaseTool):
             'Transfer': {
                 'Comment': 'Transfer a file or directory in Globus',
                 'Type': 'Action',
-                'ActionUrl': 'https://actions.automate.globus.org/transfer/transfer',
+                'ActionUrl': 'https://transfer.actions.globus.org/transfer/',
                 'Parameters': {
-                    'source_endpoint_id.$': '$.input.transfer_source_endpoint_id',
-                    'destination_endpoint_id.$': '$.input.transfer_destination_endpoint_id',
-                    'transfer_items': [
+                    'source_endpoint.$': '$.input.transfer_source_endpoint_id',
+                    'destination_endpoint.$': '$.input.transfer_destination_endpoint_id',
+                    'DATA': [
                         {
                             'source_path.$': '$.input.transfer_source_path',
                             'destination_path.$': '$.input.transfer_destination_path',
