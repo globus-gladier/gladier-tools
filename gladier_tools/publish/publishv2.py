@@ -234,9 +234,9 @@ def publishv2_gather_metadata(
             "search_index": index,
         },
         "transfer": {
-            "source_endpoint_id": source_collection,
-            "destination_endpoint_id": destination_collection,
-            "transfer_items": [
+            "source_endpoint": source_collection,
+            "destination_endpoint": destination_collection,
+            "DATA": [
                 {
                     "source_path": translate_guest_collection_path(
                         source_collection_basepath, dataset
@@ -376,7 +376,7 @@ class Publishv2(GladierBaseTool):
             "Publishv2Transfer": {
                 "Comment": "Transfer files for publication",
                 "Type": "Action",
-                "ActionUrl": "https://actions.automate.globus.org/transfer/transfer",
+                "ActionUrl": "https://transfer.actions.globus.org/transfer/",
                 "InputPath": "$.Publishv2GatherMetadata.details.results[0].output.transfer",
                 "ResultPath": "$.Publishv2Transfer",
                 "WaitTime": 600,

@@ -3,7 +3,14 @@ from unittest import mock
 import pathlib
 import datetime
 import json
-from datacite import schema42, schema43
+import sys
+try:
+    from datacite import schema42, schema43
+except AttributeError:
+    if sys.version_info.major == 3 and sys.version_info.minor == 8:
+        print('Datacite broken on version 3.8, tests will be skipped.')
+    else:
+        raise
 from gladier_tools.publish.publishv2 import publishv2_gather_metadata
 
 mock_data = pathlib.Path(__file__).resolve().parent.parent / "mock_data/publish/"
@@ -117,12 +124,14 @@ def test_bad_metadata_file(publish_input):
         publishv2_gather_metadata(**publish_input)
 
 
+@pytest.mark.skipif(sys.version_info.major == 3 and sys.version_info.minor == 8, reason="Datacite version broken")
 def test_validate_dc(publish_input):
     dc = publishv2_gather_metadata(**publish_input)["search"]["content"]["dc"]
     schema42.validator.validate(dc)
     schema43.validator.validate(dc)
 
 
+@pytest.mark.skipif(sys.version_info.major == 3 and sys.version_info.minor == 8, reason="Datacite version broken")
 @pytest.mark.parametrize(
     "schema,metadata",
     [
@@ -171,6 +180,7 @@ def test_eval(schema, metadata, publish_input):
     publishv2_gather_metadata(**publish_input)
 
 
+@pytest.mark.skipif(sys.version_info.major == 3 and sys.version_info.minor == 8, reason="Datacite version broken")
 def test_datacite_override(publish_input):
     extra_input = {
         "metadata": {"dc": {"creators": [{"name": "nick"}]}},
@@ -181,6 +191,7 @@ def test_datacite_override(publish_input):
     assert output["creators"] == [{"name": "nick"}]
 
 
+@pytest.mark.skipif(sys.version_info.major == 3 and sys.version_info.minor == 8, reason="Datacite version broken")
 def test_datacite_validator(publish_input):
     extra_input = {
         "metadata": {"dc": {"authors": ["invalid_bob"]}},
@@ -268,9 +279,9 @@ def test_publish_transfer(publish_input):
     output = publishv2_gather_metadata(**publish_input)
     dataset = publish_input["dataset"]
     assert output["transfer"] == {
-        "destination_endpoint_id": "my_globus_collection",
-        "source_endpoint_id": "my_transfer_endpoint",
-        "transfer_items": [
+        "destination_endpoint": "my_globus_collection",
+        "source_endpoint": "my_transfer_endpoint",
+        "DATA": [
             {
                 "destination_path": str(pathlib.Path("/my-new-project") / dataset.name),
                 "source_path": str(dataset),
@@ -285,7 +296,7 @@ def test_publish_collection_valid_basepath(publish_input):
     dataset being published."""
     publish_input["source_collection_basepath"] = publish_input["dataset"].parent
     source_file = publishv2_gather_metadata(**publish_input)["transfer"][
-        "transfer_items"
+        "DATA"
     ][0]
     assert source_file["source_path"] == f"/{publish_input['dataset'].name}"
 
