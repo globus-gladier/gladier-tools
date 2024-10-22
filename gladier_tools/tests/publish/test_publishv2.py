@@ -268,9 +268,9 @@ def test_publish_transfer(publish_input):
     output = publishv2_gather_metadata(**publish_input)
     dataset = publish_input["dataset"]
     assert output["transfer"] == {
-        "destination_endpoint_id": "my_globus_collection",
-        "source_endpoint_id": "my_transfer_endpoint",
-        "transfer_items": [
+        "destination_endpoint": "my_globus_collection",
+        "source_endpoint": "my_transfer_endpoint",
+        "DATA": [
             {
                 "destination_path": str(pathlib.Path("/my-new-project") / dataset.name),
                 "source_path": str(dataset),
@@ -285,7 +285,7 @@ def test_publish_collection_valid_basepath(publish_input):
     dataset being published."""
     publish_input["source_collection_basepath"] = publish_input["dataset"].parent
     source_file = publishv2_gather_metadata(**publish_input)["transfer"][
-        "transfer_items"
+        "DATA"
     ][0]
     assert source_file["source_path"] == f"/{publish_input['dataset'].name}"
 
